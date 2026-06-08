@@ -1,0 +1,78 @@
+Project Overview: Multi-Tenant HRMS (Human Resource Management System)
+Project Name: Global Time Sheet Templates
+Type: Web Application (SaaS Platform)
+Architecture: Multi-Tenant Laravel Application
+Status: Production-Ready with Comprehensive Modules
+
+Key Technologies & Frameworks
+Backend: Laravel 12 (PHP 8.2), MySQL
+Frontend: Vite, Tailwind CSS, Axios for API calls
+Multi-Tenancy: Stancl/Tenancy Package for isolated tenant databases
+Authentication & Permissions: Laravel Sanctum, Spatie Laravel Permission
+Additional Libraries: PhpSpreadsheet (Excel/CSV handling), GeoIP (location detection), Carbon (date/time management)
+Core Modules & Features Implemented
+1. Multi-Tenant Infrastructure
+Complete tenant isolation with separate databases per organization
+Domain-based tenant routing and session management
+Centralized tenant registration and management
+Plan-based feature limitations (employees, locations, storage, API calls)
+2. Employee Management System
+Comprehensive employee onboarding with multi-step wizard
+Salary structure management with components (earnings/deductions)
+Bank account management with primary account designation
+Organization hierarchy (departments, positions, business units, cost centers)
+Employee types and pay basis configurations
+3. Attendance Management
+Automated daily attendance generation for day/night shifts
+Shift-based date assignment (night shifts recorded for start date)
+Clock-in/out functionality with real-time status tracking
+Leave and holiday integration with attendance processing
+Scheduled commands for automated processing (runs twice daily)
+Attendance dashboards and reporting with Excel export
+4. Payroll Processing System
+Monthly payroll generation from employee salary details
+Inline editing of salary components with automatic recalculation
+Manual adjustments (LOP, bonuses, advances, reimbursements)
+Payroll finalization workflow with audit trails
+Batch processing for bulk operations
+Bank file export (NEFT/RTGS TXT format) for salary transfers
+Excel/CSV export for reporting and compliance
+5. Leave Management
+Leave request system with approval workflows
+Leave policies with accrual and carry-forward rules
+Leave types and reasons configuration
+Balance tracking and reporting
+Integration with attendance for automatic leave marking
+6. Time Sheet Management
+Project-based time tracking
+Approval workflows for submitted time sheets
+Activity type masters and project assignments
+Reporting and export capabilities
+7. Administrative Features
+Role-based access control (RBAC) with custom permissions
+Foundational data management (countries, currencies, locations)
+Holiday groups and work calendars
+Announcement and FAQ systems
+Compensation structures and job titles
+8. Reporting & Analytics
+Dashboard with key metrics and visualizations
+Export functionality (Excel, CSV, PDF) across modules
+Attendance summaries and payroll reports
+Employee performance and leave analytics
+Technical Achievements
+Scalable Architecture: Designed for high-volume enterprise deployments with tenant isolation
+Automated Processes: Cron jobs for attendance generation and scheduled tasks
+Data Integrity: Comprehensive validation, audit trails, and snapshot mechanisms
+Performance Optimization: Efficient queries, caching, and background job processing
+Security: Multi-layer authentication, permission checks, and data encryption
+Internationalization: Multi-language support with GeoIP-based locale detection
+Database Design
+Tenant-Specific Tables: Isolated data per organization
+Complex Relationships: Many-to-many for plans/features, hierarchical org structures
+Audit & Versioning: Change tracking for salary details and payroll adjustments
+Optimized Schemas: Normalized tables with proper indexing for performance
+Deployment & Maintenance
+Build Tools: Vite for asset compilation, Composer for PHP dependencies
+Testing: PHPUnit test suite with feature and unit tests
+Migrations: Database versioning with tenant-specific migrations
+Monitoring: Logging and error tracking for production stability

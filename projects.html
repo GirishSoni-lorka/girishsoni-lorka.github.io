@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#07090B" />
+
+  <title>Projects — Girish Soni · Senior Laravel Full Stack Developer</title>
+  <meta name="description" content="The full build log — 8 production systems by Girish Soni: enterprise HRMS, AI RAG platforms, multi-tenant SaaS, fintech, healthcare and logistics. Laravel, FastAPI, React, AWS." />
+  <meta name="author" content="Girish Soni" />
+  <link rel="canonical" href="https://girish.lorka.in/projects.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://girish.lorka.in/projects.html" />
+  <meta property="og:title" content="Projects — Girish Soni" />
+  <meta property="og:description" content="8 production systems: enterprise HRMS, AI platforms, multi-tenant SaaS, fintech, healthcare and logistics." />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2307090B'/%3E%3Ctext x='20' y='64' font-size='40' font-family='monospace' font-weight='bold' fill='%2358E08B'%3E%26gt;_%3C/text%3E%3C/svg%3E" />
+
+  <script>
+    (function () { try { var s = localStorage.getItem('theme'); document.documentElement.setAttribute('data-theme', s || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')); } catch (e) {} })();
+  </script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="loader" id="loader" aria-hidden="true"><span class="loader__txt mono">loading ~/projects<span class="loader__cur">_</span></span></div>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+  <div class="fx" aria-hidden="true"><span class="fx__grid"></span><span class="fx__scan"></span><span class="fx__glow"></span></div>
+
+  <a class="skip-link" href="#projects">Skip to content</a>
+
+  <!-- ============ NAV ============ -->
+  <header class="navbar" id="navbar">
+    <nav class="nav container" aria-label="Primary">
+      <a href="index.html" class="brand" aria-label="Girish Soni — home">
+        <span class="brand__mark mono">&gt;_</span>
+        <span class="brand__txt">girish<span class="brand__dim">.dev</span></span>
+      </a>
+
+      <ul class="nav__links" id="navLinks">
+        <li><a href="index.html#approach" class="nav__link mono">~/approach</a></li>
+        <li><a href="projects.html" class="nav__link mono is-active">~/projects</a></li>
+        <li><a href="index.html#journey" class="nav__link mono">~/journey</a></li>
+        <li><a href="index.html#contact" class="nav__link mono">~/contact</a></li>
+      </ul>
+
+      <div class="nav__actions">
+        <button class="cmdk-trigger mono" id="cmdkTrigger" aria-label="Open command palette">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="cmdk-trigger__label">Search</span><kbd id="cmdkKbd">⌘K</kbd>
+        </button>
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle color theme" aria-pressed="false" title="Toggle theme">
+          <svg class="i-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <svg class="i-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="nav__burger" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ============ HEADER ============ -->
+    <section class="phero container">
+      <a href="index.html" class="phero__back mono">&larr; cd ~/home</a>
+      <span class="label mono"><i>ls -la</i> ~/projects</span>
+      <h1 class="phero__title">The full build log</h1>
+      <p class="phero__lead">Eight production systems I've designed and shipped — enterprise HRMS, AI document platforms, multi-tenant SaaS, fintech, healthcare and real-time logistics. The problem each solved, the architecture, and the stack behind it.</p>
+      <div class="phero__meta">
+        <div class="phero__stat"><b>8</b><span>systems shipped</span></div>
+        <div class="phero__stat"><b>4+</b><span>years building</span></div>
+        <div class="phero__stat"><b>2</b><span>continents served</span></div>
+        <div class="phero__stat"><b>Laravel</b><span>core expertise</span></div>
+      </div>
+    </section>
+
+    <section class="container" id="projects">
+      <!-- Filter bar -->
+      <div class="pfilter" role="tablist" aria-label="Filter projects">
+        <button class="filter-btn is-active" data-filter="all" role="tab" aria-selected="true">all</button>
+        <button class="filter-btn" data-filter="saas" role="tab" aria-selected="false">enterprise-saas</button>
+        <button class="filter-btn" data-filter="ai" role="tab" aria-selected="false">ai</button>
+        <button class="filter-btn" data-filter="hrms" role="tab" aria-selected="false">hrms</button>
+        <button class="filter-btn" data-filter="fintech" role="tab" aria-selected="false">fintech</button>
+        <button class="filter-btn" data-filter="healthcare" role="tab" aria-selected="false">healthcare</button>
+        <button class="filter-btn" data-filter="logistics" role="tab" aria-selected="false">logistics</button>
+        <button class="filter-btn" data-filter="ecommerce" role="tab" aria-selected="false">e-commerce</button>
+        <span class="pfilter__count" id="filterCount">8 / 8</span>
+      </div>
+
+      <div class="sheets" id="sheets">
+
+        <!-- 01 EnerVenue HRMS -->
+        <article class="sheet reveal" data-tags="hrms saas" id="proj-enervenue">
+          <div class="sheet__head">
+            <span class="sheet__idx mono">01</span>
+            <div><span class="sheet__cat mono">enterprise-hrms · us &amp; china</span><h2 class="sheet__title">EnerVenue HRMS</h2></div>
+            <span class="sheet__year mono">Maxaix · 2024</span>
+          </div>
+          <p class="sheet__desc">A full HR platform (internally "Phoenix") running EnerVenue's workforce across the US and China — employee lifecycle, org hierarchy, payroll sync and real-time multilingual operations for thousands of employees.</p>
+          <div class="sheet__cols">
+            <div class="sheet__feat">
+              <span class="sheet__lbl mono">// what it does</span>
+              <ul>
+                <li>Full employee lifecycle — profiles, life events, documents, plus bulk CSV/Excel import &amp; export for US and China with validation.</li>
+                <li>SAML2 single sign-on with granular RBAC across US HR, China HR and Manager roles.</li>
+                <li>TriNet API integration for payroll &amp; benefits sync; Radford job codes and compensation history.</li>
+                <li>Azure Translator delivers live English/Chinese translation across announcements, FAQs and news.</li>
+                <li>Real-time notifications and HR task workflows over Socket.io; cron-driven syncing and reminders.</li>
+                <li>60+ Eloquent models with Redis-backed queues for bulk operations at scale.</li>
+              </ul>
+            </div>
+            <aside class="sheet__side">
+              <span class="sheet__lbl mono">// stack</span>
+              <p class="sheet__stack mono"><span>Laravel 11</span> · PHP 8.2 · MySQL · Redis · Socket.io · SAML2 · TriNet API · Azure Translator · Vite</p>
+              <span class="sheet__lbl mono">// links</span>
+              <div class="sheet__links">
+                <a href="#" class="sheet__lnk">case study ↗</a>
+                <a href="#" class="sheet__lnk sheet__lnk--ghost">live demo ↗</a>
+              </div>
+            </aside>
+          </div>
+        </article>
+
+        <!-- 02 AI Enterprise Chatbot -->
+        <article class="sheet reveal" data-tags="ai saas" id="proj-chatbot">
+          <div class="sheet__head">
+            <span class="sheet__idx mono">02</span>
+            <div><span class="sheet__cat mono">ai · document-intelligence</span><h2 class="sheet__title">AI Enterprise Chatbot</h2></div>
+            <span class="sheet__year mono">Maxaix · 2024</span>
+          </div>
+          <p class="sheet__desc">A multi-tenant RAG assistant that ingests a company's documents into a vector database and answers questions with grounded, cited responses — wired into the cloud storage and CRM tools teams already use.</p>
+          <div class="sheet__cols">
+            <div class="sheet__feat">
+              <span class="sheet__lbl mono">// what it does</span>
+              <ul>
+                <li>RAG over LangChain + OpenAI with reranking, query rewriting and streaming responses for real-time chat.</li>
+                <li>Ingestion pipeline for PDF, Excel, CSV, DOCX &amp; PPTX — converted to Markdown then embedded.</li>
+                <li>Milvus vector store for sub-second semantic search, with bulk ingest and delete APIs.</li>
+                <li>Async processing via Celery + Redis so large uploads never block the UI.</li>
+                <li>Multi-tenant isolation plus 8+ integrations — Google Drive, OneDrive, Dropbox, Salesforce, Wealthbox, Redtail, Gmail, Outlook.</li>
+                <li>Laravel front-end + FastAPI back-end, PostgreSQL, deployed with Docker &amp; Nginx.</li>
+              </ul>
+            </div>
+            <aside class="sheet__side">
+              <span class="sheet__lbl mono">// stack</span>
+              <p class="sheet__stack mono"><span>Laravel</span> · <span>FastAPI</span> · Python · OpenAI · LangChain · Milvus · PostgreSQL · Celery · Redis · Docker</p>
+              <span class="sheet__lbl mono">// links</span>
+              <div class="sheet__links">
+                <a href="#" class="sheet__lnk">case study ↗</a>
+                <a href="#" class="sheet__lnk sheet__lnk--ghost">github ↗</a>
+              </div>
+            </aside>
+          </div>
+        </article>
+
+        <!-- 03 SendMePls -->
+        <article class="sheet reveal" data-tags="logistics" id="proj-sendmepls">
+          <div class="sheet__head">
+            <span class="sheet__idx mono">03</span>
+            <div><span class="sheet__cat mono">real-time · logistics</span><h2 class="sheet__title">SendMePls</h2></div>
+            <span class="sheet__year mono">Maxaix · 2024</span>
+          </div>
+          <p class="sheet__desc">An end-to-end delivery and shopping platform — customers place multi-shop orders, agents are onboarded and assigned, and everything is tracked live with in-app comms and built-in payments.</p>
+          <div class="sheet__cols">
+            <div class="sheet__feat">
+              <span class="sheet__lbl mono">// what it does</span>
+              <ul>
+                <li>Real-time order tracking and status events via Laravel Reverb websockets + Pusher/Echo.</li>
+                <li>Agent onboarding with document verification, vehicle assignment and exportable reports.</li>
+                <li>Payments engine — PayCentral card allocation/loading, Ozow bank payouts and automated refunds.</li>
+                <li>Agora video/audio calls + Twilio SMS + FCM push connecting agents and customers.</li>
+                <li>Shopping orders with multi-shop support, VAT/discount/budget logic and approval flows.</li>
+                <li>100+ models, Redis queues, AES encryption; PM2 &amp; Workerman for process/WebSocket management.</li>
+              </ul>
+            </div>
+            <aside class="sheet__side">
+              <span class="sheet__lbl mono">// stack</span>
+              <p class="sheet__stack mono"><span>Laravel 12</span> · MySQL · Redis · Reverb · Pusher · Agora · Twilio · PayCentral · Ozow · FCM</p>
+              <span class="sheet__lbl mono">// links</span>
+              <div class="sheet__links">
+                <a href="#" class="sheet__lnk">case study ↗</a>
+                <a href="#" class="sheet__lnk sheet__lnk--ghost">live demo ↗</a>
+              </div>
+            </aside>
+          </div>
+        </article>
+
+        <!-- 04 KaiFit -->
+        <article class="sheet reveal" data-tags="saas mobile" id="proj-kaifit">
+          <div class="sheet__head">
+            <span class="sheet__idx mono">04</span>
+            <div><span class="sheet__cat mono">subscription-saas · mobile backend</span><h2 class="sheet__title">KaiFit</h2></div>
+            <span class="sheet__year mono">Maxaix · 2024</span>
+          </div>
+          <p class="sheet__desc">The backend and admin platform powering a consumer fitness app — subscriptions, food &amp; exercise logging, restaurant discovery and a full marketing-analytics console.</p>
+          <div class="sheet__cols">
+            <div class="sheet__feat">
+              <span class="sheet__lbl mono">// what it does</span>
+              <ul>
+                <li>RESTful mobile APIs — OTP &amp; social auth (Google/Apple), food/exercise logging and health sync.</li>
+                <li>RevenueCat subscriptions via secure webhooks, with promo codes and entitlement handling.</li>
+                <li>Google Places restaurant search, menus and QR-based food logging; FCM push notifications.</li>
+                <li>Admin panel for user management, content CRUD, lead campaigns and CSV analytics exports.</li>
+                <li>70+ table schema, Sanctum auth and queue-based emails/notifications.</li>
+              </ul>
+            </div>
+            <aside class="sheet__side">
+              <span class="sheet__lbl mono">// stack</span>
+              <p class="sheet__stack mono"><span>Laravel</span> · MySQL · Sanctum · RevenueCat · Google Places · FCM · Canny · Make.com</p>
+              <span class="sheet__lbl mono">// links</span>
+              <div class="sheet__links">
+                <a href="#" class="sheet__lnk">case study ↗</a>
+                <a href="#" class="sheet__lnk sheet__lnk--ghost">live demo ↗</a>
+              </div>
+            </aside>
+          </div>
+        </article>
+
+        <!-- 05 Global Time Sheet -->
+        <article class="sheet reveal" data-tags="hrms saas" id="proj-globaltimesheet">
+          <div class="sheet__head">
+            <span class="sheet__idx mono">05</span>
+            <div><span class="sheet__cat mono">multi-tenant-saas · hrms</span><h2 class="sheet__title">Global Time Sheet Templates</h2></div>
+            <span class="sheet__year mono">2023 — 2024</span>
+          </div>
+          <p class="sheet__desc">A production-ready multi-tenant HRMS covering the full payroll, attendance, leave and timesheet lifecycle — each organisation fully isolated with its own database.</p>
+          <div class="sheet__cols">
+            <div class="sheet__feat">
+              <span class="sheet__lbl mono">// what it does</span>
+              <ul>
+                <li>True multi-tenancy with isolated databases per org (Stancl/Tenancy), domain routing and plan-based limits.</li>
+                <li>Payroll generation with inline component editing, LOP/bonus/advances and NEFT/RTGS bank-file export.</li>
+                <li>Automated day/night-shift attendance generation via twice-daily scheduled commands.</li>
+                <li>Leave management with accrual &amp; carry-forward rules; project timesheets with approval workflows.</li>
+                <li>RBAC via Spatie Permission, audit trails, salary versioning and Excel/CSV/PDF exports.</li>
+              </ul>
+            </div>
+            <aside class="sheet__side">
+              <span class="sheet__lbl mono">// stack</span>
+              <p class="sheet__stack mono"><span>Laravel 12</span> · MySQL · Stancl Tenancy · Sanctum · Spatie Permission · PhpSpreadsheet · GeoIP</p>
+              <span class="sheet__lbl mono">// links</span>
+              <div class="sheet__links">
+                <a href="#" class="sheet__lnk">case study ↗</a>
+                <a href="#" class="sheet__lnk sheet__lnk--ghost">live demo ↗</a>
+              </div>
+            </aside>
+          </div>
+        </article>
+
+        <!-- 06 FedX -->
+        <article class="sheet reveal" data-tags="fintech saas" id="proj-fedx">
+          <div class="sheet__head">
+            <span class="sheet__idx mono">06</span>
+            <div><span class="sheet__cat mono">fintech · payroll-tax</span><h2 class="sheet__title">FedX — Tax Reconciliation</h2></div>
+            <span class="sheet__year mono">2023 — 2024</span>
+          </div>
+          <p class="sheet__desc">A payroll-tax reconciliation system that ingests huge payroll spreadsheets, computes region-based state taxes, and generates compliance-ready PDF declarations.</p>
+          <div class="sheet__cols">
+            <div class="sheet__feat">
+              <span class="sheet__lbl mono">// what it does</span>
+              <ul>
+                <li>Handles Excel uploads up to 500MB through async Laravel queue processing — no timeouts on heavy loads.</li>
+                <li>Dynamic tax engine with configurable rates by region, denomination and cost center, each with validity periods.</li>
+                <li>Aggregates by personnel number and cost center; handles retroactive payroll adjustments.</li>
+                <li>DomPDF tax-declaration reports plus filtering, search and pagination over large datasets.</li>
+                <li>Role-based access (admin/editor/user) with soft-deletes preserving full history.</li>
+              </ul>
+            </div>
+            <aside class="sheet__side">
+              <span class="sheet__lbl mono">// stack</span>
+              <p class="sheet__stack mono"><span>Laravel 12</span> · PHP 8.2 · MySQL · Box/Spout · DomPDF · Laravel Queues · Carbon</p>
+              <span class="sheet__lbl mono">// links</span>
+              <div class="sheet__links">
+                <a href="#" class="sheet__lnk">case study ↗</a>
+                <a href="#" class="sheet__lnk sheet__lnk--ghost">live demo ↗</a>
+              </div>
+            </aside>
+          </div>
+        </article>
+
+        <!-- 07 MaxMRJ -->
+        <article class="sheet reveal" data-tags="healthcare" id="proj-maxmrj">
+          <div class="sheet__head">
+            <span class="sheet__idx mono">07</span>
+            <div><span class="sheet__cat mono">healthcare · referral-platform</span><h2 class="sheet__title">MaxMRJ</h2></div>
+            <span class="sheet__year mono">Web Techno · 2022 — 2024</span>
+          </div>
+          <p class="sheet__desc">A role-based healthcare platform that connects hospital discharge planners with post-acute care providers, streamlining patient referrals from hospital to home.</p>
+          <div class="sheet__cols">
+            <div class="sheet__feat">
+              <span class="sheet__lbl mono">// what it does</span>
+              <ul>
+                <li>React 18 + Redux + Material-UI SPA with RBAC for Admin, Discharge Planner, Provider and Provider User roles.</li>
+                <li>Referral system with bidirectional referrals, accept/decline workflows, status tracking and PDF reports.</li>
+                <li>PointClickCare (PCC) 3-legged OAuth for patient/EHR import; dynamic survey forms with AI-powered summaries.</li>
+                <li>Calendar scheduling, task templates, bundled patient referrals across ~150+ APIs.</li>
+                <li>AWS file storage, Google Maps, JWT auth and idle-timeout sessions; Dockerised + Nginx deploy.</li>
+              </ul>
+            </div>
+            <aside class="sheet__side">
+              <span class="sheet__lbl mono">// stack</span>
+              <p class="sheet__stack mono"><span>React 18</span> · Redux · Material-UI · Axios · AWS · Google Maps · Docker · Nginx</p>
+              <span class="sheet__lbl mono">// links</span>
+              <div class="sheet__links">
+                <a href="#" class="sheet__lnk">case study ↗</a>
+                <a href="#" class="sheet__lnk sheet__lnk--ghost">live demo ↗</a>
+              </div>
+            </aside>
+          </div>
+        </article>
+
+        <!-- 08 BIC -->
+        <article class="sheet reveal" data-tags="ecommerce" id="proj-bic">
+          <div class="sheet__head">
+            <span class="sheet__idx mono">08</span>
+            <div><span class="sheet__cat mono">e-commerce · b2b-catalog</span><h2 class="sheet__title">BIC Industrial Catalog</h2></div>
+            <span class="sheet__year mono">Web Techno · 2022 — 2024</span>
+          </div>
+          <p class="sheet__desc">A B2B digital catalog for an industrial-parts company — hierarchical product browsing for customers and a complete admin panel for managing inventory.</p>
+          <div class="sheet__cols">
+            <div class="sheet__feat">
+              <span class="sheet__lbl mono">// what it does</span>
+              <ul>
+                <li>Hierarchical catalog — Category → Subcategory → Brand Model → Product, with part numbers and OE references.</li>
+                <li>AJAX load-more pagination, category/brand filtering and search across a responsive Tailwind UI.</li>
+                <li>Secure admin panel with full product CRUD, validated image uploads and contact-form mail.</li>
+                <li>Clean Eloquent relational schema with migrations and seeders for fast onboarding.</li>
+              </ul>
+            </div>
+            <aside class="sheet__side">
+              <span class="sheet__lbl mono">// stack</span>
+              <p class="sheet__stack mono"><span>Laravel 11</span> · PHP 8.2 · MySQL · Tailwind CSS · Vite · Blade</p>
+              <span class="sheet__lbl mono">// links</span>
+              <div class="sheet__links">
+                <a href="#" class="sheet__lnk">case study ↗</a>
+                <a href="#" class="sheet__lnk sheet__lnk--ghost">live demo ↗</a>
+              </div>
+            </aside>
+          </div>
+        </article>
+
+      </div>
+
+      <p class="pempty mono" id="pempty">no projects match that filter.</p>
+    </section>
+
+    <!-- CTA -->
+    <section class="section">
+      <div class="container">
+        <div class="cta reveal">
+          <span class="label mono"><i>$</i> next</span>
+          <h2 class="cta__title">Want the deep-dive on any of these?</h2>
+          <p class="cta__sub">Happy to walk through the architecture, trade-offs and code on a call — or grab the résumé.</p>
+          <div class="cta__rows">
+            <a href="mailto:Girish.soni.official@gmail.com" class="cta__row"><span class="cta__k mono">email</span><span class="cta__v">Girish.soni.official@gmail.com</span><span class="cta__go mono" aria-hidden="true">↗</span></a>
+            <a href="index.html#contact" class="cta__row"><span class="cta__k mono">more</span><span class="cta__v">All contact channels</span><span class="cta__go mono" aria-hidden="true">↗</span></a>
+          </div>
+          <a href="assets/resume.pdf" class="btn btn--solid btn--lg" download>Download résumé <span class="btn__ext mono">↓</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner mono">
+      <span class="footer__c">© 2026 girish soni</span>
+      <span class="footer__c">hand-built — html · css · js · 0 frameworks</span>
+      <a href="index.html" class="footer__top">cd ~/home ↑</a>
+    </div>
+  </footer>
+
+  <!-- ============ COMMAND PALETTE ============ -->
+  <div class="palette" id="palette" hidden>
+    <div class="palette__scrim" id="paletteScrim"></div>
+    <div class="palette__panel" role="dialog" aria-modal="true" aria-label="Command palette">
+      <div class="palette__search">
+        <span class="palette__icon mono">&gt;</span>
+        <input id="paletteInput" class="palette__input" type="text" placeholder="Jump to a project or run a command…" autocomplete="off" spellcheck="false" aria-label="Command palette search" />
+        <kbd class="palette__esc mono">ESC</kbd>
+      </div>
+      <div class="palette__list" id="paletteList" role="listbox" aria-label="Commands"></div>
+      <div class="palette__foot mono"><span><kbd>↑</kbd><kbd>↓</kbd> navigate</span><span><kbd>↵</kbd> run</span><span><kbd>esc</kbd> close</span></div>
+    </div>
+  </div>
+
+  <div class="toast mono" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="projects.js" defer></script>
+</body>
+</html>

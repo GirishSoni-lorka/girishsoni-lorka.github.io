@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#07090B" />
+
+  <title>Girish Soni — Senior Laravel Full Stack Developer</title>
+  <meta name="description" content="Girish Soni builds enterprise SaaS, AI platforms and scalable cloud systems. Senior Laravel full-stack engineer. An interactive console portfolio — press ⌘K." />
+  <meta name="author" content="Girish Soni" />
+  <link rel="canonical" href="https://girish.lorka.in/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://girish.lorka.in/" />
+  <meta property="og:title" content="Girish Soni — Senior Laravel Full Stack Developer" />
+  <meta property="og:description" content="An interactive console portfolio. Building enterprise SaaS, AI platforms and scalable cloud systems." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Girish Soni — Senior Laravel Full Stack Developer" />
+  <meta name="twitter:description" content="An interactive console portfolio." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2307090B'/%3E%3Ctext x='20' y='64' font-size='40' font-family='monospace' font-weight='bold' fill='%2358E08B'%3E%26gt;_%3C/text%3E%3C/svg%3E" />
+
+  <script>
+    (function () {
+      try {
+        var s = localStorage.getItem('theme');
+        document.documentElement.setAttribute('data-theme', s || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+      } catch (e) {}
+    })();
+  </script>
+
+  <link rel="stylesheet" href="style.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org", "@type": "Person",
+    "name": "Girish Soni", "jobTitle": "Senior Laravel Full Stack Developer",
+    "url": "https://girish.lorka.in", "email": "Girish.soni.official@gmail.com",
+    "telephone": "+91-9928283765", "worksFor": { "@type": "Organization", "name": "Maxaix" },
+    "knowsAbout": ["Laravel", "SaaS Architecture", "AI Applications", "AWS", "Multi-tenant Systems"],
+    "sameAs": ["https://www.linkedin.com/in/girishsoni20", "https://github.com/GirishSoni-lorka"]
+  }
+  </script>
+</head>
+
+<body>
+  <div class="loader" id="loader" aria-hidden="true"><span class="loader__txt mono">booting girish.os<span class="loader__cur">_</span></span></div>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+  <div class="fx" aria-hidden="true"><span class="fx__grid"></span><span class="fx__scan"></span><span class="fx__glow"></span></div>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============ NAV ============ -->
+  <header class="navbar" id="navbar">
+    <nav class="nav container" aria-label="Primary">
+      <a href="#top" class="brand" aria-label="Girish Soni — home">
+        <span class="brand__mark mono">&gt;_</span>
+        <span class="brand__txt">girish<span class="brand__dim">.dev</span></span>
+      </a>
+
+      <ul class="nav__links" id="navLinks">
+        <li><a href="#approach" class="nav__link mono">~/approach</a></li>
+        <li><a href="#work" class="nav__link mono">~/work</a></li>
+        <li><a href="projects.html" class="nav__link mono">~/projects</a></li>
+        <li><a href="#journey" class="nav__link mono">~/journey</a></li>
+        <li><a href="#contact" class="nav__link mono">~/contact</a></li>
+      </ul>
+
+      <div class="nav__actions">
+        <button class="cmdk-trigger mono" id="cmdkTrigger" aria-label="Open command palette">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="cmdk-trigger__label">Search</span>
+          <kbd id="cmdkKbd">⌘K</kbd>
+        </button>
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle color theme" aria-pressed="false" title="Toggle theme">
+          <svg class="i-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <svg class="i-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="nav__burger" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <span id="top"></span>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="hero">
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <p class="status reveal mono"><span class="status__dot"></span> status: available · senior &amp; remote · responds in &lt; 24h</p>
+
+          <h1 class="hero__title reveal" style="--d:1">Girish Soni</h1>
+          <p class="hero__role reveal mono" style="--d:2">Senior Laravel Full&nbsp;Stack Developer</p>
+
+          <p class="hero__lead reveal" style="--d:3">
+            I build the software businesses run on — enterprise SaaS, AI platforms and the
+            cloud systems beneath them. Four years turning fuzzy product problems into
+            things that hold up in production.
+          </p>
+
+          <div class="hero__actions reveal" style="--d:4">
+            <a href="#work" class="btn btn--solid">See the work</a>
+            <button class="btn btn--line" id="openPaletteBtn">Press <kbd class="kbd-inline" id="kbdHint">⌘K</kbd> to explore</button>
+          </div>
+
+          <p class="hero__hint reveal mono" style="--d:5">// tip: the terminal on the right is real — try <b>help</b></p>
+        </div>
+
+        <!-- Interactive terminal -->
+        <div class="term reveal" style="--d:3" id="termWrap">
+          <div class="term__bar">
+            <span class="term__dots"><i></i><i></i><i></i></span>
+            <span class="term__title mono">girish@portfolio — zsh</span>
+            <span class="term__live mono"><span class="term__live-dot"></span>live</span>
+          </div>
+          <div class="term__screen" id="termScreen" tabindex="0" role="group" aria-label="Interactive terminal">
+            <div class="term__out" id="termOut"></div>
+            <div class="term__line" id="termLine" hidden>
+              <span class="term__prompt mono">girish@portfolio<span class="term__path">:~$</span></span>
+              <input id="termInput" class="term__input mono" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input" />
+              <span class="term__caret" id="termCaret"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOCUS STRIP ============ -->
+    <section class="strip" aria-label="Focus areas">
+      <div class="strip__track" id="stripTrack">
+        <b>$</b><span>enterprise-saas</span><b>$</b><span>multi-tenant</span><b>$</b><span>ai &amp; rag</span><b>$</b><span>cloud-architecture</span><b>$</b><span>laravel-at-scale</span><b>$</b><span>real-time</span>
+        <b>$</b><span>enterprise-saas</span><b>$</b><span>multi-tenant</span><b>$</b><span>ai &amp; rag</span><b>$</b><span>cloud-architecture</span><b>$</b><span>laravel-at-scale</span><b>$</b><span>real-time</span>
+      </div>
+    </section>
+
+    <!-- ============ APPROACH ============ -->
+    <section class="section" id="approach">
+      <div class="container">
+        <header class="sec-head reveal">
+          <span class="label mono"><i>01</i> approach</span>
+          <h2 class="sec-title">I'm not hired to write code.<br />I'm hired to make products <span class="hl">work</span>.</h2>
+        </header>
+
+        <div class="principles">
+          <article class="principle reveal" style="--d:0">
+            <span class="principle__n mono">/* 001 */</span>
+            <h3>Architecture that survives growth</h3>
+            <p>Tenant isolation, queue-driven workloads, caching and event streams — decisions made on day one so the product scales without a rewrite on day five hundred.</p>
+          </article>
+          <article class="principle reveal" style="--d:1">
+            <span class="principle__n mono">/* 002 */</span>
+            <h3>The metric is the point</h3>
+            <p>Onboarding time, uptime, conversion, cost-to-serve. I optimise the number the business cares about — not the count of tickets closed.</p>
+          </article>
+          <article class="principle reveal" style="--d:2">
+            <span class="principle__n mono">/* 003 */</span>
+            <h3>AI built in, not bolted on</h3>
+            <p>Retrieval pipelines, semantic search and document intelligence wired in properly — grounded, isolated per tenant, and shipped, not demoed.</p>
+          </article>
+          <article class="principle reveal" style="--d:3">
+            <span class="principle__n mono">/* 004 */</span>
+            <h3>It has to run at 2am</h3>
+            <p>Dockerised, deployed on AWS, observable and recoverable. The unglamorous engineering that decides whether a launch becomes a business.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WORK ============ -->
+    <section class="section section--flush" id="work">
+      <div class="container">
+        <header class="sec-head reveal">
+          <span class="label mono"><i>02</i> selected.work</span>
+          <h2 class="sec-title">Three systems, end to end</h2>
+          <p class="sec-lead">The problem each one solved, how it was built, what it changed. <span class="mono dim">// tech stays out of the way</span></p>
+        </header>
+      </div>
+
+      <article class="case" id="case-01">
+        <div class="container case__inner">
+          <div class="case__copy reveal">
+            <div class="case__id"><span class="case__num mono">01</span><span class="case__cat mono">enterprise-hrms · us &amp; china</span></div>
+            <h3 class="case__title">EnerVenue HRMS</h3>
+            <p class="case__desc">One platform to run a workforce split across two continents — identity, onboarding, payroll sync and operations, in two languages, in real time.</p>
+            <ul class="case__list">
+              <li><span class="mono">→</span> SAML SSO collapsed scattered logins into one org-wide identity.</li>
+              <li><span class="mono">→</span> TriNet integration killed double data-entry across HR systems.</li>
+              <li><span class="mono">→</span> Azure Translator made the product native for US and China teams.</li>
+            </ul>
+            <dl class="case__stats">
+              <div><dt>continents</dt><dd>2</dd></div>
+              <div><dt>identity</dt><dd>SSO</dd></div>
+              <div><dt>ops</dt><dd>realtime</dd></div>
+            </dl>
+            <p class="case__stack mono">laravel · redis · mysql · saml · azure</p>
+          </div>
+          <div class="case__visual reveal" aria-hidden="true">
+            <div class="app app--flat">
+              <div class="app__top"><span class="app__dots"><i></i><i></i><i></i></span><span class="app__crumb mono">hrms · people</span></div>
+              <div class="app__table">
+                <div class="trow thead mono"><span>employee</span><span>region</span><span>status</span></div>
+                <div class="trow"><span class="cell"><i class="av"></i>Active record</span><span class="mono dim">US · CA</span><span class="tag tag--g mono">onboarded</span></div>
+                <div class="trow"><span class="cell"><i class="av"></i>Active record</span><span class="mono dim">CN · SH</span><span class="tag tag--v mono">in review</span></div>
+                <div class="trow"><span class="cell"><i class="av"></i>Active record</span><span class="mono dim">US · TX</span><span class="tag tag--g mono">onboarded</span></div>
+                <div class="trow"><span class="cell"><i class="av"></i>Active record</span><span class="mono dim">CN · BJ</span><span class="tag tag--a mono">pending</span></div>
+                <div class="trow"><span class="cell"><i class="av"></i>Active record</span><span class="mono dim">US · NY</span><span class="tag tag--g mono">onboarded</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="case case--alt" id="case-02">
+        <div class="container case__inner">
+          <div class="case__copy reveal">
+            <div class="case__id"><span class="case__num mono">02</span><span class="case__cat mono">ai · document-intelligence</span></div>
+            <h3 class="case__title">AI Enterprise Chatbot</h3>
+            <p class="case__desc">An assistant that actually knows the company. It ingests internal documents and answers with cited, source-grounded responses — isolated per tenant.</p>
+            <ul class="case__list">
+              <li><span class="mono">→</span> A RAG pipeline turns scattered docs into grounded, citable answers.</li>
+              <li><span class="mono">→</span> Vector search over thousands of documents resolves in sub-second.</li>
+              <li><span class="mono">→</span> Multi-tenant boundaries keep every customer's data fully separate.</li>
+            </ul>
+            <dl class="case__stats">
+              <div><dt>answers</dt><dd>grounded</dd></div>
+              <div><dt>search</dt><dd>semantic</dd></div>
+              <div><dt>tenancy</dt><dd>isolated</dd></div>
+            </dl>
+            <p class="case__stack mono">laravel · fastapi · openai · langchain · milvus</p>
+          </div>
+          <div class="case__visual reveal" aria-hidden="true">
+            <div class="app app--flat">
+              <div class="app__top"><span class="app__dots"><i></i><i></i><i></i></span><span class="app__crumb mono">assistant · query</span></div>
+              <div class="chat">
+                <div class="bubble bubble--in"><span class="ln w70"></span><span class="ln w45"></span></div>
+                <div class="bubble bubble--out"><span class="ln w80"></span><span class="ln w60"></span><span class="cite mono">3 sources cited</span></div>
+                <div class="bubble bubble--in"><span class="ln w50"></span></div>
+                <div class="bubble bubble--out"><span class="ln w75"></span><span class="ln w40"></span></div>
+                <div class="chat__bar"><span class="chat__field mono">ask the knowledge base…</span><span class="chat__send">↑</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="case" id="case-03">
+        <div class="container case__inner">
+          <div class="case__copy reveal">
+            <div class="case__id"><span class="case__num mono">03</span><span class="case__cat mono">real-time · logistics</span></div>
+            <h3 class="case__title">SendMePls</h3>
+            <p class="case__desc">A live delivery platform where every order moves in real time — placement to doorstep — with calls, chat and payments built in.</p>
+            <ul class="case__list">
+              <li><span class="mono">→</span> Reverb websockets stream delivery status the moment it changes.</li>
+              <li><span class="mono">→</span> Twilio and Agora power in-app calls and messaging end to end.</li>
+              <li><span class="mono">→</span> Integrated payments close the loop from order to settlement.</li>
+            </ul>
+            <dl class="case__stats">
+              <div><dt>tracking</dt><dd>live</dd></div>
+              <div><dt>comms</dt><dd>in-app</dd></div>
+              <div><dt>payments</dt><dd>native</dd></div>
+            </dl>
+            <p class="case__stack mono">laravel · redis · reverb · twilio · agora</p>
+          </div>
+          <div class="case__visual reveal" aria-hidden="true">
+            <div class="app app--flat">
+              <div class="app__top"><span class="app__dots"><i></i><i></i><i></i></span><span class="app__crumb mono">track · order #8842</span></div>
+              <div class="map">
+                <span class="map__route"></span>
+                <span class="map__pin map__pin--a"></span>
+                <span class="map__pin map__pin--b"></span><span class="map__ping"></span>
+                <div class="map__card">
+                  <span class="ln w55"></span><span class="ln w35"></span>
+                  <span class="bar"><i></i></span>
+                  <span class="mono dim">eta 12 min · driver en route</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============ MORE WORK ============ -->
+    <section class="section" id="more">
+      <div class="container">
+        <header class="sec-head reveal">
+          <span class="label mono"><i>03</i> build.log</span>
+          <h2 class="sec-title">More from the build log</h2>
+          <p class="sec-lead">Five featured above — but there are eight production systems in total. <a href="projects.html" class="link">Browse all 8 projects <span aria-hidden="true">↗</span></a></p>
+        </header>
+        <ul class="ledger">
+          <li class="ledger__row reveal">
+            <span class="ledger__idx mono">04</span>
+            <div class="ledger__main"><h3 class="ledger__title">KaiFit</h3><p class="ledger__desc">Subscription fitness platform, API-first for mobile — billing, engagement and location-aware discovery.</p></div>
+            <span class="ledger__tags mono">revenuecat · fcm · places</span>
+            <a href="projects.html#proj-kaifit" class="ledger__go mono" aria-label="KaiFit details">↗</a>
+          </li>
+          <li class="ledger__row reveal">
+            <span class="ledger__idx mono">05</span>
+            <div class="ledger__main"><h3 class="ledger__title">Global Time Sheet</h3><p class="ledger__desc">Multi-tenant HRMS handling payroll, attendance and leave with strict isolation and role-based access.</p></div>
+            <span class="ledger__tags mono">multi-tenant · payroll · rbac</span>
+            <a href="projects.html#proj-globaltimesheet" class="ledger__go mono" aria-label="Global Time Sheet details">↗</a>
+          </li>
+          <li class="ledger__row reveal">
+            <span class="ledger__idx mono">06</span>
+            <div class="ledger__main"><h3 class="ledger__title">FedX — Tax Reconciliation</h3><p class="ledger__desc">Fintech payroll-tax engine processing 500MB Excel files into region-based tax calculations and compliance PDFs.</p></div>
+            <span class="ledger__tags mono">box/spout · dompdf · queues</span>
+            <a href="projects.html#proj-fedx" class="ledger__go mono" aria-label="FedX details">↗</a>
+          </li>
+          <li class="ledger__row reveal">
+            <span class="ledger__idx mono">07</span>
+            <div class="ledger__main"><h3 class="ledger__title">MaxMRJ &amp; BIC</h3><p class="ledger__desc">A React healthcare referral platform and a B2B industrial-parts catalog — full details on the projects page.</p></div>
+            <span class="ledger__tags mono">react · healthcare · catalog</span>
+            <a href="projects.html" class="ledger__go mono" aria-label="All projects">↗</a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ JOURNEY ============ -->
+    <section class="section" id="journey">
+      <div class="container">
+        <header class="sec-head reveal">
+          <span class="label mono"><i>04</i> git.log</span>
+          <h2 class="sec-title">Four years, two teams,<br />a clear trajectory.</h2>
+        </header>
+        <div class="roles">
+          <article class="role reveal">
+            <div class="role__when mono">2024 — <span class="role__now">HEAD</span></div>
+            <div class="role__body">
+              <h3 class="role__co">Maxaix</h3>
+              <p class="role__title mono">senior laravel full stack developer</p>
+              <p class="role__text">Leading delivery of enterprise products — EnerVenue HRMS, KaiFit and the AI Enterprise Chatbot — and owning AWS deployments end to end.</p>
+            </div>
+          </article>
+          <article class="role reveal">
+            <div class="role__when mono">2022 — 2024</div>
+            <div class="role__body">
+              <h3 class="role__co">Web Techno Software</h3>
+              <p class="role__title mono">laravel developer → senior developer</p>
+              <p class="role__text">Shipped client platforms across CRM and payments, ran AWS deployments, and grew from developer into a senior, team-facing role.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="cta reveal">
+          <span class="label mono"><i>05</i> contact</span>
+          <h2 class="cta__title">Hiring for a senior or remote role?</h2>
+          <p class="cta__sub">I'm available now. Tell me what you're building — or run <span class="mono hl">resume</span> in the terminal to grab the PDF.</p>
+          <div class="cta__rows">
+            <a href="mailto:Girish.soni.official@gmail.com" class="cta__row"><span class="cta__k mono">email</span><span class="cta__v">Girish.soni.official@gmail.com</span><span class="cta__go mono" aria-hidden="true">↗</span></a>
+            <a href="tel:+919928283765" class="cta__row"><span class="cta__k mono">phone</span><span class="cta__v">+91 9928283765</span><span class="cta__go mono" aria-hidden="true">↗</span></a>
+            <a href="https://www.linkedin.com/in/girishsoni20" target="_blank" rel="noopener noreferrer" class="cta__row"><span class="cta__k mono">linkedin</span><span class="cta__v">linkedin.com/in/girishsoni20</span><span class="cta__go mono" aria-hidden="true">↗</span></a>
+            <a href="https://github.com/GirishSoni-lorka" target="_blank" rel="noopener noreferrer" class="cta__row"><span class="cta__k mono">github</span><span class="cta__v">github.com/GirishSoni-lorka</span><span class="cta__go mono" aria-hidden="true">↗</span></a>
+          </div>
+          <a href="assets/resume.pdf" class="btn btn--solid btn--lg" download>Download résumé <span class="btn__ext mono">↓</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner mono">
+      <span class="footer__c">© 2026 girish soni</span>
+      <span class="footer__c">hand-built — html · css · js · 0 frameworks</span>
+      <a href="#top" class="footer__top">return 0 ↑</a>
+    </div>
+  </footer>
+
+  <!-- ============ COMMAND PALETTE ============ -->
+  <div class="palette" id="palette" hidden>
+    <div class="palette__scrim" id="paletteScrim"></div>
+    <div class="palette__panel" role="dialog" aria-modal="true" aria-label="Command palette">
+      <div class="palette__search">
+        <span class="palette__icon mono">&gt;</span>
+        <input id="paletteInput" class="palette__input" type="text" placeholder="Type a command or search…" autocomplete="off" spellcheck="false" aria-label="Command palette search" />
+        <kbd class="palette__esc mono">ESC</kbd>
+      </div>
+      <div class="palette__list" id="paletteList" role="listbox" aria-label="Commands"></div>
+      <div class="palette__foot mono">
+        <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+        <span><kbd>↵</kbd> run</span>
+        <span><kbd>esc</kbd> close</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast mono" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

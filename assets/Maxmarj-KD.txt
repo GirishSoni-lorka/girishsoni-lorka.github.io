@@ -1,0 +1,101 @@
+Project Analysis: MaxMRJ Frontend (NEW-MAXMRJ-FRONTEND)
+Based on my analysis of the project structure, code, dependencies, and API integrations, here's a comprehensive summary of the Key Deliverables (KD) for your CV. This React-based web application appears to be a healthcare management platform focused on patient discharge planning and provider referrals. Below, I'll break it down into technologies, architecture, features, and potential contributions you can highlight.
+
+Project Overview
+Name: MaxMRJ Frontend
+Purpose: A role-based web application for managing healthcare facilities, discharge planners, providers, and patient referrals. It facilitates patient transitions from hospitals to post-acute care by connecting discharge planners with providers.
+Domain: Healthcare (Patient Discharge Planning & Referral Management)
+Scale: Medium-sized SPA with modular components, supporting multiple user roles and complex workflows.
+Status: Production-ready (based on build files, Docker setup, and API endpoints pointing to staging/production servers).
+Technology Stack & Tools
+Frontend Framework: React 18.2.0 (with hooks, class components, and functional components)
+UI Library: Material-UI (v4.x) for responsive, accessible components (tables, dialogs, forms, etc.)
+State Management: Redux (with actions, reducers, and store) for global state handling
+Routing: React Router DOM (v5.0.1) for client-side navigation and role-based route protection
+HTTP Client: Axios for API calls, with authentication headers
+Styling: Custom CSS, Material-UI themes, and styled-components
+Additional Libraries:
+FullCalendar for scheduling and calendar views
+Chartist for data visualization (charts/graphs)
+AWS SDK for cloud integrations (e.g., file storage)
+File handling: FilePond, JSZip, Mammoth (for uploads/downloads, including PDFs and documents)
+Notifications: React Notifications Component
+Forms & Validation: Joi, React Validation Mixin
+Date/Time: Date-fns, Moment.js, React DatePicker
+Maps: React Google Maps, Google Places Autocomplete
+PDF Generation: React-PDF
+Drag-and-Drop: React Beautiful DnD
+Idle Timer: React Idle Timer for session management
+Build & Deployment:
+React Scripts (Create React App v3.0.1) for building
+Docker for containerization (Node.js 10.16 Alpine base image)
+Nginx for serving static files
+Environment configuration via env-config.js and .env files
+Development Tools: ESLint, Prettier for code quality; Babel for transpilation
+Version Control: Git (with workspace file for VS Code)
+Architecture & Design Patterns
+Modular Structure: Organized into src with subfolders for components, views, layouts, services, and helpers.
+Role-Based Access Control (RBAC): Different layouts and routes for Admin, Discharge Planner (DP), Provider, and Provider User roles.
+Component-Based Architecture: Reusable components (e.g., CustomInput, Table, Modal) following Material-UI patterns.
+State Management: Redux store with actions/reducers for user auth, notifications, and app state.
+API Layer: Centralized API paths in api.js, with authentication via JWT and headers.
+Responsive Design: Mobile-friendly UI using Material-UI Grid and breakpoints.
+Security: Client-side validation, secure API calls, and session persistence.
+Internationalization: Basic locale support (English messages in en.js).
+Key Features & Functionalities
+User Authentication & Authorization:
+Login/Logout, Forgot/Reset Password
+Role-based dashboards (Admin, DP, Provider, Provider User)
+Profile management with password changes and organization details
+Facility Management (Admin Role):
+CRUD operations for facilities (hospitals/clinics)
+Facility assignment to providers
+Discharge Planner (DP) Features:
+Patient list management (import from PCC/EHR systems, assign/unassign)
+Task creation and templates (bulk operations, PDF exports)
+Survey forms (dynamic input types, AI-powered summaries, risk assessments)
+Calendar integration for scheduling
+Referral creation and tracking (send to providers, update status, comments)
+Patient search history and reports
+Provider Management (Admin Role):
+CRUD for providers and provider users
+Bulk uploads, filtering, and status updates
+Subscription and category management
+Invoice generation and payment tracking
+Referral System:
+Bidirectional referrals (DP to Provider)
+Notifications for new/updated referrals
+Acceptance/decline workflows with comments
+Referral reports and summaries (with PDF downloads)
+Patient Management:
+Patient profiles, status updates, file uploads (face sheets, documents)
+Contact management and address tracking
+Bundle patients for group referrals
+Reporting & Analytics:
+Executive summaries, referral reports
+Downloadable PDFs and CSVs
+Provider data usage and invoices
+Notifications & Communication:
+In-app notifications with read/unread status
+Push notes to external systems (e.g., PCC)
+CMS & Static Pages:
+Terms of Service, BAA (Business Associate Agreement)
+Banner management
+Integrations:
+External APIs: PointClickCare (PCC) for patient data import and 3-legged OAuth
+Google Maps for location services
+AWS for file storage
+Email/SMS for notifications (via backend)
+APIs & Backend Integration
+Base URL: https://stage.maxmrj.com (staging) / https://app.maxmrj.com (production)
+Key Endpoints: ~150+ APIs covering auth, patient data, referrals, tasks, surveys, reports, etc.
+Authentication: JWT-based with role-specific access
+Data Flow: RESTful APIs with JSON payloads; file uploads via multipart
+Potential Contributions for CV
+To highlight your role in this project, emphasize:
+
+Development: Built responsive UI components, integrated complex forms (e.g., surveys with dynamic fields), and implemented role-based routing.
+Features Implemented: Referral system, task templates, calendar views, patient imports, or provider search.
+Technologies Mastered: React ecosystem (Redux, Material-UI), API integrations, and deployment (Docker).
+Challenges Solved: Handling large datasets (pagination, sorting), real-time notifications, and cross-browser compatibility.
+Impact: Improved patient care workflows by streamlining referrals, reducing manual processes, and enabling data-driven decisions.
