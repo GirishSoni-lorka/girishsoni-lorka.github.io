@@ -139,7 +139,7 @@
     { group: 'Navigate', ic: '~', title: 'Contact', meta: '05', run: () => go('#contact') },
     { group: 'Navigate', ic: '→', title: 'View all 8 projects', sub: 'Full build log', keywords: 'projects work portfolio all', run: () => { window.location.href = 'projects.html'; } },
 
-    { group: 'Projects', ic: '#', title: 'EnerVenue HRMS', sub: 'Enterprise HRMS · US & China', keywords: 'hrms saml azure', run: () => go('#case-01') },
+    { group: 'Projects', ic: '#', title: 'Enterprise HRMS', sub: 'Workforce platform · US & China', keywords: 'hrms saml azure', run: () => go('#case-01') },
     { group: 'Projects', ic: '#', title: 'AI Enterprise Chatbot', sub: 'RAG · document intelligence', keywords: 'ai rag openai langchain milvus', run: () => go('#case-02') },
     { group: 'Projects', ic: '#', title: 'SendMePls', sub: 'Real-time logistics', keywords: 'logistics reverb twilio agora', run: () => go('#case-03') },
     { group: 'Projects', ic: '#', title: 'KaiFit', sub: 'Subscription fitness SaaS', keywords: 'revenuecat fcm mobile', run: () => { window.location.href = 'projects.html#proj-kaifit'; } },
@@ -301,7 +301,7 @@
     projects() {
       return [
         '<span class="t-dim">total 8</span>',
-        '  <span class="t-key">EnerVenue HRMS</span>        enterprise hrms · us &amp; china',
+        '  <span class="t-key">Enterprise HRMS</span>       enterprise hrms · us &amp; china',
         '  <span class="t-key">AI Enterprise Chatbot</span> rag · document intelligence',
         '  <span class="t-key">SendMePls</span>             real-time logistics',
         '  <span class="t-key">KaiFit</span>                subscription fitness saas',

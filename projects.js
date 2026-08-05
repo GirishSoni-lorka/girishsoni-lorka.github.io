@@ -146,7 +146,7 @@
   let lastFocused = null, selIndex = 0, visibleItems = [];
 
   const COMMANDS = [
-    { group: 'Jump to project', ic: '#', title: 'EnerVenue HRMS', sub: 'Enterprise HRMS · US & China', keywords: 'saml azure trinet hrms', run: () => goTo('#proj-enervenue') },
+    { group: 'Jump to project', ic: '#', title: 'Enterprise HRMS', sub: 'Workforce platform · US & China', keywords: 'saml azure trinet hrms', run: () => goTo('#proj-hrms') },
     { group: 'Jump to project', ic: '#', title: 'AI Enterprise Chatbot', sub: 'RAG · document intelligence', keywords: 'ai openai langchain milvus', run: () => goTo('#proj-chatbot') },
     { group: 'Jump to project', ic: '#', title: 'SendMePls', sub: 'Real-time logistics', keywords: 'logistics reverb twilio agora', run: () => goTo('#proj-sendmepls') },
     { group: 'Jump to project', ic: '#', title: 'KaiFit', sub: 'Subscription fitness SaaS', keywords: 'revenuecat fcm mobile', run: () => goTo('#proj-kaifit') },
