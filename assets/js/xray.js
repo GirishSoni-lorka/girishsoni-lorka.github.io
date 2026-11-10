@@ -26,6 +26,9 @@ function setup(el) {
   bone.inert = true;
   bone.querySelectorAll('[id]').forEach(n => n.removeAttribute('id'));
   bone.querySelectorAll('[data-node]').forEach(n => n.removeAttribute('data-node'));
+  // AI Agents mode state never belongs in the spec layer
+  bone.removeAttribute('data-ag');
+  bone.querySelectorAll('[data-ag]').forEach(n => n.removeAttribute('data-ag'));
 
   bone.querySelectorAll('[data-bone]').forEach(n => {
     n.innerHTML = `<code class="spec">${spec(n.dataset.bone)}</code>`;

@@ -96,7 +96,7 @@ export function measureScenes(scenes, state) {
 /* ---------- stage figures (the line draws the system's diagram) ---------- */
 const mapper = b => (u, v) => [b.x + u * b.w, b.y + v * b.h];
 
-function figure(kind, b) {
+export function figure(kind, b) {
   const m = mapper(b);
   if (kind === 'twins') {
     // fork into two lanes (US, China), each running through its population,

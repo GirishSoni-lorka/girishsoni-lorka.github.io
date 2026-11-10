@@ -1,11 +1,18 @@
 /* Girish Soni — main.js
-   One ticker drives smooth scroll, the x-ray, the particle field and the line. */
+   One ticker drives smooth scroll, the x-ray, the particle field and the line.
+
+   The page has two experience modes. AI Agents (agents.js, loaded on demand)
+   is the default; Classic is the original experience. The motion system below
+   (field, line, x-ray) runs in both: in AI Agents mode each section's motion
+   fades in once the agents have built it, and smooth scrolling (Lenis) stays
+   off so the agents' auto-scroll tour and native scrolling are untouched. */
 
 import { clamp } from './geo.js';
 import { collectScenes, measureScenes } from './scenes.js';
 import { Field } from './field.js';
 import { Signal } from './signal.js';
 import { initXray } from './xray.js';
+import { readMode, saveMode, initModeSwitch } from './mode.js';
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -15,8 +22,10 @@ function whenLibs(fn) {
   else addEventListener('load', () => (window.gsap ? fn() : console.warn('gsap failed to load; motion disabled')), { once: true });
 }
 
-whenLibs(async () => {
-  const gsap = window.gsap;
+/* ==========================================================================
+   Classic mode
+   ========================================================================== */
+async function bootClassic(gsap, smooth) {
   document.documentElement.classList.add('js');
 
   // a rail marker in each "log" section tells the line where to run
@@ -44,7 +53,8 @@ whenLibs(async () => {
   const heroBeam = document.querySelector('.hero__beam');
   const bar = document.querySelector('.bar');
 
-  const lenis = !reduce && window.Lenis ? new window.Lenis({ anchors: true, lerp: .09, wheelMultiplier: .95 }) : null;
+  const makeLenis = () => (!reduce && window.Lenis ? new window.Lenis({ anchors: true, lerp: .09, wheelMultiplier: .95 }) : null);
+  let lenis = smooth ? makeLenis() : null;
 
   function resizeCanvases() {
     const dpr = Math.min(window.devicePixelRatio || 1, state.mobile ? 1.5 : 2);
@@ -95,7 +105,7 @@ whenLibs(async () => {
 
   let barOn = false;
   gsap.ticker.lagSmoothing(0);
-  gsap.ticker.add((time, deltaMs) => {
+  const tick = (time, deltaMs) => {
     if (lenis) lenis.raf(time * 1000);
     if (document.hidden) return;
     state.time = time; state.dt = Math.min(.05, deltaMs / 1000);
@@ -119,5 +129,69 @@ whenLibs(async () => {
     xray.frame(state);
     field.frame(state);
     signal.frame(state, field);
+  };
+  gsap.ticker.add(tick);
+
+  return {
+    /* Lenis smooth scrolling belongs to Classic mode only */
+    setSmooth(on) {
+      if (on && !lenis) lenis = makeLenis();
+      if (!on && lenis) { lenis.destroy(); lenis = null; }
+      barOn = null; // resync the bar background with the current scroll
+    },
+  };
+}
+
+/* ==========================================================================
+   Mode orchestration
+   ========================================================================== */
+const html = document.documentElement;
+let mode = readMode();
+let classic = null, classicBooting = false, agents = null, token = 0;
+
+/* the motion system boots once and keeps running; only smooth scroll follows the mode */
+function startMotion() {
+  if (classic) { classic.setSmooth(mode === 'classic'); return; }
+  if (classicBooting) return;
+  classicBooting = true;
+  whenLibs(() => {
+    bootClassic(window.gsap, mode === 'classic').then(c => {
+      classic = c;
+      c.setSmooth(mode === 'classic'); // the visitor may have switched while it booted
+    }).catch(e => console.warn('classic motion failed to start', e));
   });
+}
+
+async function startAgents() {
+  const my = ++token;
+  html.classList.add('mode-agents');
+  startMotion();
+  try {
+    const { createAgents } = await import('./agents.js');
+    if (my !== token || mode !== 'agents') return;
+    if (agents) agents.destroy();
+    agents = createAgents({ reduce });
+    agents.start();
+  } catch (e) {
+    // the content must never stay hidden: fall back to the finished page
+    console.warn('AI Agents mode failed to start', e);
+    html.classList.remove('ag-pending');
+  }
+}
+
+function stopAgents() {
+  ++token;
+  if (agents) { agents.destroy(); agents = null; }
+  html.classList.remove('mode-agents', 'ag-pending', 'ag-motion-live');
+}
+
+const modeSwitch = initModeSwitch(mode, next => {
+  if (next === mode) return;
+  mode = next; saveMode(next);
+  if (next === 'agents') startAgents();
+  else { stopAgents(); startMotion(); }
+  modeSwitch.set(next);
 });
+
+if (mode === 'agents') startAgents();
+else startMotion();
