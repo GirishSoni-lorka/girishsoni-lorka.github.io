@@ -1,18 +1,23 @@
 /* Girish Soni — main.js
    One ticker drives smooth scroll, the x-ray, the particle field and the line.
 
-   The page has two experience modes. AI Agents (agents.js, loaded on demand)
+   The page has three experience modes. AI Agents (agents.js, loaded on demand)
    is the default; Classic is the original experience. The motion system below
    (field, line, x-ray) runs in both: in AI Agents mode each section's motion
    fades in once the agents have built it, and smooth scrolling (Lenis) stays
-   off so the agents' auto-scroll tour and native scrolling are untouched. */
+   off so the agents' auto-scroll tour and native scrolling are untouched.
+
+   Game mode (assets/game/, loaded on demand) is a separate full-screen 3D
+   world. While it runs, the motion system here is paused, not torn down. */
 
 import { clamp } from './geo.js';
 import { collectScenes, measureScenes } from './scenes.js';
 import { Field } from './field.js';
 import { Signal } from './signal.js';
 import { initXray } from './xray.js';
-import { readMode, saveMode, initModeSwitch } from './mode.js';
+import { readStoredMode, resolveStart, saveMode, initModeSwitch } from './mode.js';
+import { openSelector, notice } from './selector.js';
+import { launchGame } from './game-launcher.js';
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -103,11 +108,11 @@ async function bootClassic(gsap, smooth) {
     gsap.to(state, { intro: 1, duration: 1.9, delay: .3, ease: 'power2.inOut' });
   }
 
-  let barOn = false;
+  let barOn = false, paused = false;
   gsap.ticker.lagSmoothing(0);
   const tick = (time, deltaMs) => {
     if (lenis) lenis.raf(time * 1000);
-    if (document.hidden) return;
+    if (document.hidden || paused) return;
     state.time = time; state.dt = Math.min(.05, deltaMs / 1000);
     const sy = window.scrollY; state.dScroll = sy - state.sy; state.sy = sy;
 
@@ -139,6 +144,8 @@ async function bootClassic(gsap, smooth) {
       if (!on && lenis) { lenis.destroy(); lenis = null; }
       barOn = null; // resync the bar background with the current scroll
     },
+    /* Game mode covers the page: stop drawing the field, line and x-ray underneath it */
+    setPaused(on) { paused = on; },
   };
 }
 
@@ -146,18 +153,24 @@ async function bootClassic(gsap, smooth) {
    Mode orchestration
    ========================================================================== */
 const html = document.documentElement;
-let mode = readMode();
-let classic = null, classicBooting = false, agents = null, token = 0;
+const isHome = Boolean(document.querySelector('.hero'));
+const start = resolveStart({ stored: readStoredMode(), isHome, hash: location.hash });
+let mode = start.selector ? null : start.mode; // null until a first-time visitor has chosen
+let classic = null, classicBooting = false, agents = null, token = 0, game = null;
 
 /* the motion system boots once and keeps running; only smooth scroll follows the mode */
+function syncMotion(c) {
+  c.setSmooth(mode === 'classic');
+  c.setPaused(mode === 'game');
+}
 function startMotion() {
-  if (classic) { classic.setSmooth(mode === 'classic'); return; }
+  if (classic) { syncMotion(classic); return; }
   if (classicBooting) return;
   classicBooting = true;
   whenLibs(() => {
     bootClassic(window.gsap, mode === 'classic').then(c => {
       classic = c;
-      c.setSmooth(mode === 'classic'); // the visitor may have switched while it booted
+      syncMotion(c); // the visitor may have switched while it booted
     }).catch(e => console.warn('classic motion failed to start', e));
   });
 }
@@ -185,13 +198,41 @@ function stopAgents() {
   html.classList.remove('mode-agents', 'ag-pending', 'ag-motion-live');
 }
 
-const modeSwitch = initModeSwitch(mode, next => {
+/* Game mode: a full-screen world on top of the page. The page keeps its
+   scroll position and its motion system is paused until the visitor returns. */
+function startGame() {
+  html.classList.add('mode-game');
+  if (classic) syncMotion(classic);
+  const handle = launchGame({ onExit: next => setMode(next) });
+  game = handle;
+  handle.ready.catch(e => {
+    if (game !== handle) return; // the visitor already left
+    console.warn('Game mode failed to start', e);
+    setMode('classic');
+    notice(e && e.code === 'unsupported'
+      ? 'Game Mode needs WebGL 2, which this browser or device does not provide. Showing the classic site instead.'
+      : 'Game Mode could not start on this device. Showing the classic site instead.');
+  });
+}
+
+function stopGame() {
+  if (game) { const g = game; game = null; g.destroy(); }
+  html.classList.remove('mode-game');
+}
+
+function setMode(next) {
   if (next === mode) return;
+  if (mode === 'game') stopGame();
   mode = next; saveMode(next);
   if (next === 'agents') startAgents();
-  else { stopAgents(); startMotion(); }
+  else if (next === 'classic') { stopAgents(); startMotion(); }
+  else { stopAgents(); startGame(); }
   modeSwitch.set(next);
-});
+}
 
-if (mode === 'agents') startAgents();
+const modeSwitch = initModeSwitch(start.mode, setMode);
+
+if (start.selector) openSelector({ onChoose: setMode });
+else if (mode === 'game') startGame();
+else if (mode === 'agents') startAgents();
 else startMotion();
