@@ -25,9 +25,9 @@
   <link rel="stylesheet" href="assets/css/site.css">
   <link rel="stylesheet" href="assets/css/agents.css">
   <link rel="stylesheet" href="assets/css/selector.css">
-  <!-- experience mode: AI Agents by default (Classic once chosen); start from a blank canvas, no flash of finished content.
-       A remembered Game choice shows this page as Classic: Game Mode only resumes on the home page. -->
-  <script>(function(){var m;try{m=localStorage.getItem('gs-mode')}catch(e){}if(m!=='classic'&&m!=='game')document.documentElement.classList.add('mode-agents','ag-pending')})()</script>
+  <!-- experience mode: Classic by default (AI Agents once chosen, or asked for with ?mode=agents); start from a blank canvas, no flash of finished content.
+       A remembered Game choice shows this page as Classic: Game Mode only opens on the home page. -->
+  <script>(function(){var m,q;try{m=localStorage.getItem('gs-mode')}catch(e){}q=/[?&]mode=(classic|agents|game|tour|choose)(&|$)/.exec(location.search);if(q&&q[1]!='choose')m=q[1];if(m==='agents')document.documentElement.classList.add('mode-agents','ag-pending')})()</script>
 </head>
 
 <body>

@@ -105,6 +105,17 @@ export function buildProps(ctx) {
     lamps.map(l => ({ x: l.x + Math.sin(l.ry) * .6, y: 5.2, z: l.z + Math.cos(l.ry) * .6, ry: l.ry })), { cast: false });
   instanced(scene, new THREE.BoxGeometry(.18, .04, .8), ctx.glow('#fff3d6'),
     lamps.map(l => ({ x: l.x + Math.sin(l.ry) * .85, y: 5.13, z: l.z + Math.cos(l.ry) * .85, ry: l.ry })), { cast: false, receive: false });
+  // at night each lamp throws a pool of light on the ground: a soft additive disc, not a real light
+  const poolGeo = new THREE.CircleGeometry(6.5, 28);
+  poolGeo.rotateX(-Math.PI / 2);
+  const poolMat = new THREE.MeshBasicMaterial({
+    map: poolTexture(), color: '#ffd9a0', transparent: true, opacity: 0, blending: THREE.AdditiveBlending,
+    depthWrite: false, toneMapped: false, polygonOffset: true, polygonOffsetFactor: -6, polygonOffsetUnits: -12,
+  });
+  const pools = instanced(scene, poolGeo, poolMat,
+    lamps.map(l => ({ x: l.x + Math.sin(l.ry) * .85, y: .1, z: l.z + Math.cos(l.ry) * .85 })), { cast: false, receive: false });
+  pools.visible = false;
+  ctx.night.push(k => { pools.visible = k > .02; poolMat.opacity = k * .5; });
 
   /* ---------- benches along the ring ---------- */
   const benches = [];
@@ -127,18 +138,37 @@ export function buildProps(ctx) {
     const w = 16 + rnd() * 20, h = 26 + rnd() * rnd() * 130;
     towers.push({ x: Math.sin(b) * r, y: h / 2, z: -Math.cos(b) * r, ry: rnd() * 3.14, sx: w, sy: h, sz: 14 + rnd() * 18, color: shades[i % shades.length] });
   }
-  const windows = facadeTexture();
-  windows.repeat.set(4, 10);
-  instanced(scene, new THREE.BoxGeometry(1, 1, 1), new THREE.MeshStandardMaterial({ map: windows, roughness: .6, metalness: .1 }), towers, { cast: false, receive: false });
+  const windows = facadeTexture(), litWindows = facadeTexture(true);
+  windows.repeat.set(4, 10); litWindows.repeat.set(4, 10);
+  const skyline = new THREE.MeshStandardMaterial({ map: windows, roughness: .6, metalness: .1, emissive: '#ffffff', emissiveMap: litWindows, emissiveIntensity: 0 });
+  instanced(scene, new THREE.BoxGeometry(1, 1, 1), skyline, towers, { cast: false, receive: false });
+  ctx.night.push(k => { skyline.emissiveIntensity = k * .5; });
 }
 
-/* a tileable facade: rows of windows on a pale wall */
-export function facadeTexture() {
+/* a soft round falloff, for the pools of lamplight */
+function poolTexture() {
+  return canvasTexture(128, 128, g => {
+    const grad = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+    grad.addColorStop(0, 'rgba(255,255,255,1)');
+    grad.addColorStop(.35, 'rgba(255,255,255,.45)');
+    grad.addColorStop(1, 'rgba(255,255,255,0)');
+    g.fillStyle = grad; g.fillRect(0, 0, 128, 128);
+  });
+}
+
+/* A tileable facade: rows of windows on a pale wall. `lit` draws the same
+   windows as they look at night (some on, the wall black), for use as an
+   emissive map over the daytime texture. */
+export function facadeTexture(lit = false) {
   const t = canvasTexture(128, 128, g => {
-    g.fillStyle = '#f2f0ea'; g.fillRect(0, 0, 128, 128);
+    g.fillStyle = lit ? '#000000' : '#f2f0ea'; g.fillRect(0, 0, 128, 128);
     const rnd = seeded('facade');
     for (let y = 0; y < 4; y++) for (let x = 0; x < 4; x++) {
       const v = rnd();
+      if (lit) {
+        if (v > .86 || (v > .3 && v < .42)) { g.fillStyle = v > .86 ? '#ffd9a0' : '#e8a45c'; g.fillRect(x * 32 + 5, y * 32 + 6, 22, 20); } // about one window in four is lit
+        continue;
+      }
       g.fillStyle = v > .8 ? '#9fc4d6' : v > .4 ? '#6f97ad' : '#587f96';
       g.fillRect(x * 32 + 5, y * 32 + 6, 22, 20);
       g.fillStyle = 'rgba(255,255,255,.22)';

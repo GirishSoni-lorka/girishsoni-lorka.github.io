@@ -26,10 +26,10 @@ const BUILDERS = {
 
 const pause = () => new Promise(r => setTimeout(r, 0));
 
-export async function buildWorld(engine, quality, onProgress = () => {}, isCancelled = () => false) {
+export async function buildWorld(engine, quality, onProgress = () => {}, isCancelled = () => false, { night = false } = {}) {
   const ctx = createContext(engine.scene);
   const steps = [
-    ['Lighting the sky', () => { ctx.lighting = createLighting(engine, quality); }],
+    ['Lighting the sky', () => { ctx.lighting = createLighting(engine, quality, night); }],
     ['Laying roads', () => buildRoads(ctx)],
     ...locations.map(l => [`Building ${l.name}`, () => BUILDERS[l.id](ctx, l)]),
     ['Raising the city', () => buildCity(ctx)],
@@ -42,14 +42,17 @@ export async function buildWorld(engine, quality, onProgress = () => {}, isCance
     steps[i][1]();
   }
   onProgress(1, 'Ready');
+  let blend = -1; // the night blend the lamps and windows were last set to
 
   return {
     colliders: ctx.colliders,
     interactables: ctx.interactables,
     clickTargets: ctx.clickTargets,
     lighting: ctx.lighting,
+    setNight(on, instant) { ctx.lighting.setNight(on, instant); },
     update(t, dt, focus) {
-      ctx.lighting.update(focus, t);
+      const k = ctx.lighting.update(focus, t, dt);
+      if (k !== blend) { blend = k; for (let i = 0; i < ctx.night.length; i++) ctx.night[i](k); }
       for (let i = 0; i < ctx.animated.length; i++) ctx.animated[i](t, dt);
     },
   };

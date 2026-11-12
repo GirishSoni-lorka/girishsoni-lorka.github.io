@@ -30,6 +30,8 @@ export function buildAchievementCenter(ctx, loc) {
   add(g, new THREE.SphereGeometry(8.4, 48, 16, 0, Math.PI * 2, 0, Math.PI / 2), ctx.mat('#b9aee6', { rough: .18, metal: .6, double: true }), 0, 8.2, 0);
   column(g, gold, .16, 2.2, 0, 16.5, 0, { seg: 8 });
   ring(g, ctx.mat(accent, { rough: .4, emissive: accent, glow: .5, double: true }), 9.72, 9.9, 0, 7.75, 0);
+  // the roof, for the camera only: it stays under the ceiling instead of cutting through the dome
+  ctx.solidCircle(g, 0, 0, 9.9, 17, { solid: false, base: 6.7 });
 
   // the award
   column(g, ctx.mat(PALETTE.dark, { rough: .5, metal: .3 }), 1.25, 1.3, 0, 0, 0, { seg: 32 });

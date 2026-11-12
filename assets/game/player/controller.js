@@ -10,14 +10,15 @@ export const MOVE = { walk: 4.6, run: 9.2, accel: 11, turn: 12, jump: 8.6, gravi
 const shortest = a => Math.atan2(Math.sin(a), Math.cos(a));
 
 /* Pure step, exported for tests: advances `s` ({ x, y, z, vx, vz, vy, heading, grounded })
-   by dt given the wanted move (mx right, my forward, in camera space). */
-export function stepPlayer(s, { mx, my, sprint, jump }, cameraYaw, dt, colliders) {
+   by dt given the wanted move (mx right, my forward, in camera space).
+   `boost` scales the top speed; only the guided tour uses it. */
+export function stepPlayer(s, { mx, my, sprint, jump, boost = 1 }, cameraYaw, dt, colliders) {
   const fx = -Math.sin(cameraYaw), fz = -Math.cos(cameraYaw); // camera forward on the ground
   const rx = Math.cos(cameraYaw), rz = -Math.sin(cameraYaw);  // camera right
   let wx = fx * my + rx * mx, wz = fz * my + rz * mx;
   const amount = Math.min(1, Math.hypot(wx, wz));
   if (amount > 1e-3) { const l = Math.hypot(wx, wz); wx /= l; wz /= l; }
-  const top = (sprint ? MOVE.run : MOVE.walk) * amount;
+  const top = (sprint ? MOVE.run : MOVE.walk) * amount * boost;
 
   const k = Math.min(1, dt * MOVE.accel);
   s.vx += (wx * top - s.vx) * k;
@@ -60,5 +61,11 @@ export function createController({ player, colliders }) {
       sync();
     },
     play(name, seconds) { hold = { name, until: seconds }; },
+    /* put the player somewhere else, standing still */
+    teleport({ x, z, heading }) {
+      s.x = x; s.z = z; s.y = 0; s.vx = s.vz = s.vy = 0; s.grounded = true;
+      if (Number.isFinite(heading)) s.heading = heading;
+      sync();
+    },
   };
 }

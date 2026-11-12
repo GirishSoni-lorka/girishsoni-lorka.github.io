@@ -9,7 +9,7 @@ import { skillGroups, allSkills, findSkill } from '../data/skills.js';
 import { projects, findProject } from '../data/projects.js';
 import { achievements, education, certifications, milestones } from '../data/achievements.js';
 import { contact } from '../data/contact.js';
-import { findLocation } from '../data/locations.js';
+import { locations, findLocation } from '../data/locations.js';
 import { drawPoster } from '../core/poster.js';
 
 const section = (title, ...kids) => h('section', { class: 'gp-sec' }, h('h3', { class: 'gp-sec__title', text: title }), kids);
@@ -148,6 +148,24 @@ const PANELS = {
           : h('p', { class: 'gp-dim', text: 'None on record. The work in the Project Garage is the evidence.' })),
         section('Professional milestones', h('ol', { class: 'gp-steps' }, milestones.map(m => h('li', null, h('span', { class: 'gp-when', text: m.when }), h('span', { text: m.text }))))),
         h('div', { class: 'gp-actions' }, go('See the projects', () => open({ type: 'projects' }), true)),
+      ],
+    };
+  },
+
+  /* shown when every district has been found, or the guided tour ends */
+  complete({ open }) {
+    const email = contact.methods.find(m => m.primary), linkedin = contact.methods.find(m => m.id === 'linkedin');
+    return {
+      eyebrow: `${locations.length} of ${locations.length} districts`, title: 'City explored', accent: '#ff5a1f',
+      body: [
+        h('p', { class: 'gp-lead', text: profile.intro }),
+        h('p', { class: 'gp-status' }, h('span', { class: 'gp-status__dot' }), profile.status),
+        h('dl', { class: 'gp-facts' }, profile.facts.map(f => h('div', null, h('dt', { text: f.label }), h('dd', { text: f.value })))),
+        h('div', { class: 'gp-actions' },
+          link('Email me', email.href, { solid: true }),
+          link('LinkedIn', linkedin.href, { external: true }),
+          link('Download résumé', 'assets/resume.pdf', { download: true })),
+        section('Look again', h('div', { class: 'gp-picks' }, locations.map(l => go(l.name, () => open({ type: l.panel }))))),
       ],
     };
   },

@@ -24,7 +24,7 @@ export function detectSupport() {
 
 /* Returns at once with a handle. `ready` rejects if the game cannot start;
    `destroy()` is safe at any point, including while it is still loading. */
-export function launchGame({ onExit }) {
+export function launchGame({ onExit, tour = false }) {
   let dead = false, game = null, loading = null;
 
   const ready = (async () => {
@@ -39,7 +39,7 @@ export function launchGame({ onExit }) {
     loading.progress(.06, 'Loading the engine');
     const { createGame } = await import('../game/index.js');
     if (dead) return;
-    const g = await createGame({ loading, onExit, support: s, isCancelled: () => dead });
+    const g = await createGame({ loading, onExit, support: s, tour, isCancelled: () => dead });
     if (dead) { if (g) g.destroy(); return; }
     game = g;
   })();

@@ -10,27 +10,35 @@
 | 6 | Portfolio integration | Done |
 | 7 | Game UI | Done |
 | 8 | Optimisation | Done |
-| 9 | Production checks | Done locally. **Not deployed, not committed** — waiting for approval. |
+| 9 | Production checks | Done. Committed and pushed by the owner (`faf6863`). |
+| 10 | Second round: default mode, share links, guided tour, night, sound, summary, smaller model | Done locally. **Not committed, not deployed** — waiting for approval. |
 
 ## How to check it yourself
 
 ```
-node --test "tests/*.test.mjs"      # 73 unit tests, no install needed (Node 22.7+)
+node --test "tests/*.test.mjs"      # 89 unit tests, no install needed (Node 22.7+)
 ```
 
 Serve the folder with any static server (XAMPP already does: `http://localhost/me/`, which is also a
-sub-path test) and open `index.html`. Clear the `gs-mode` key in localStorage to see the first-visit selector.
+sub-path test) and open `index.html`. A first visit opens Classic. Links that open something else:
+
+| Address | Opens |
+| --- | --- |
+| `?mode=game` | Game Mode |
+| `?mode=tour` | Game Mode with the guided tour as the main button |
+| `?mode=agents` | AI Agents |
+| `?mode=choose` | The three-way selector |
 
 ## Results
 
 | Check | Result |
 | --- | --- |
-| Unit tests (`tests/`) | 73 / 73 pass |
-| Browser run-through (headless Chrome, site served from `/portfolio/`, exact-case paths) | 83 / 83 pass |
+| Unit tests (`tests/`) | 89 / 89 pass |
+| Browser run-through (headless Chrome, site served from `/portfolio/`, exact-case paths) | 155 / 155 pass (86 original, 69 for the second round) |
 | Console errors in Classic, AI Agents, Game, mobile | None |
 | Frame rate at 1920×1080 on a GeForce GT 730 (2014 entry-level card) | Low 79 fps, Medium 39 fps, High 31 fps |
 | Draw calls / triangles, widest view | about 180 / 73,000 |
-| Game Mode download, uncompressed | 1.45 MB in 47 files (Three.js 675 KB, character 453 KB) |
+| Game Mode download, uncompressed | 1.28 MB in 50 files (Three.js 675 KB, character 283 KB) |
 | Classic / AI Agents download of game code | 0 bytes of engine, world or model |
 | Memory after 4 enter/leave cycles | Stable (about 12 MB JS heap); earlier game instances are collected |
 
@@ -50,8 +58,8 @@ was not measured, because this machine has no such GPU.
 - **Created:** `assets/js/selector.js`, `assets/js/game-launcher.js`, `assets/css/selector.css`.
 - **Modified:** `assets/js/mode.js` (third mode, `resolveStart`), `assets/js/main.js` (orchestration,
   `setPaused`), `index.html` and `projects.html` (one stylesheet link and the inline mode script).
-- **Behaviour change to note:** a first-time visitor on the plain home page now sees the selector instead of
-  going straight into AI Agents. Deep links and `projects.html` behave exactly as before.
+- **Changed in round 2:** a first-time visitor now gets Classic directly (see milestone 10). The selector is
+  kept, behind `?mode=choose`.
 
 ### 3 — 3D foundation
 - **Created:** `assets/game/core/` (engine, store, settings, poster), `world/lighting.js`, `ui/loading.js`,
@@ -100,6 +108,38 @@ was not measured, because this machine has no such GPU.
 - See the results table. GitHub Pages specifics verified: `CNAME` unchanged, no workflow or build added, no
   root-absolute paths, every import and asset path exists with exact case, no file starts with `_`.
 
+### 10 — Second round
+- **Default mode:** a first visit opens Classic on every page. Before this work it was AI Agents; milestone 2
+  had made it the selector. AI Agents and Game are one click away on the switch.
+- **Share links:** `?mode=game`, `?mode=tour`, `?mode=agents`, `?mode=choose`. The link wins over the
+  remembered mode, never opens the game on a deep link or on `projects.html`, and is removed from the address
+  as soon as the visitor switches mode themselves. The pause menu has "Copy a link to this world".
+- **Guided tour** (`systems/tour.js`, `ui/tourbar.js`): the explorer runs the streets to all six districts in
+  order and opens each panel; "Next stop" is at the foot of the panel. "Skip the walk" jumps to the stop, and so
+  does the tour itself if it is ever blocked for two seconds. Pressing a movement key takes the controls back.
+  Starts from the loading screen, the HUD, the pause menu or the T key. In the browser run all five walks
+  arrived on foot in 3 to 8 seconds each.
+- **Summary panel:** when the tour ends, or all six districts are found, a "City explored" panel offers email,
+  LinkedIn, the résumé and a way back to each district. Nothing is locked behind it.
+- **Night** (N, HUD button or Settings): moonlight, stars, lit windows and a pool of light under every street
+  lamp. The pools are additive discs, not real lights, so the cost is two extra draw calls.
+- **Sound** (M, HUD button or Settings; off by default): wind, footsteps, jump and landing, and short notes
+  for discoveries and panels. All generated with Web Audio: no audio files were added.
+- **Character:** 464 KB to 290 KB by removing the nine unused animation clips and the unused face morph
+  targets, then resampling and quantising. No decoder is needed. Checked by eye, idle and running.
+- **Camera under the rotunda roof:** fixed with a camera-only collider. Highest camera position measured
+  inside, at the steepest angle: 6.4 m under a 7.2 m ceiling.
+- **Reduced motion:** with the system setting on, the opening camera move is cut, the overview does not turn
+  and the tour jumps between stops instead of running.
+- **Found and fixed on the way:** a panel reopened within a third of a second of closing stayed invisible.
+- **GitHub Pages:** `_config.yml` excludes `tests/`, `prompt.md` and the three reports from the published
+  site. This relies on the default Jekyll build (there is no `.nojekyll`); it is covered by a unit test but
+  has not been checked on GitHub Pages itself.
+- **Created:** `_config.yml`, `assets/game/systems/tour.js`, `systems/audio.js`, `ui/tourbar.js`,
+  `tests/tour.test.mjs`. **Modified:** `mode.js`, `main.js`, `selector.js`, `game-launcher.js`, both pages'
+  inline script, and most of `assets/game/` (index, lighting, props, buildings, HUD, menu, panel, loading,
+  content, controller, camera, input, settings, store, CSS).
+
 ## Known gaps (documented, not hidden)
 
 - **Certifications:** none exist in the source material; the Achievement Center says so.
@@ -107,13 +147,12 @@ was not measured, because this machine has no such GPU.
   project data; `image`, `github` and `live` fields in `data/projects.js` light up when filled in.
 - **Next.js and Prompt Engineering** have thin evidence in the existing content, so their panels are short
   and only restate what the résumé and the chatbot write-up support.
-- **Real-device testing:** mobile was tested in Chrome's touch emulation only, not on a phone. Safari and
-  Firefox were not run.
-- **Camera under roofs:** collision is 2D with heights, so inside the Achievement Center rotunda a steep
-  camera angle can clip the ceiling.
-- **Audio:** none.
+- **Real-device testing:** the owner checked the first version on an Android phone. The second round (tour,
+  night, sound) was tested in Chrome's touch emulation only. iPhone Safari and Firefox were not run.
+- **Sound** was checked for errors, not listened to: the test browser is headless.
+- **Night performance** was measured once: 47 fps on High at 1440×860 on the GT 730.
 
 ## Risks to GitHub Pages compatibility
 
-None found. The one thing to keep in mind: the repository gains about 1.6 MB (engine, model, game code), all
-served as plain static files, and `tests/` plus the three `.md` files will also be published unless excluded.
+None found. The repository gains about 1.4 MB (engine, model, game code), all served as plain static files.
+`_config.yml` keeps `tests/` and the `.md` files off the site; see milestone 10 for the one unverified point.

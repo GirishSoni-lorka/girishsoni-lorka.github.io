@@ -9,14 +9,13 @@ export const QUALITY = {
 };
 export const QUALITY_ORDER = ['low', 'medium', 'high'];
 
-export const defaults = { quality: 'auto', sensitivity: 1, invertY: false };
+export const defaults = { quality: 'auto', sensitivity: 1, invertY: false, night: false, sound: false };
 
 export function sanitize(raw) {
   const s = { ...defaults, ...(raw && typeof raw === 'object' ? raw : {}) };
   if (s.quality !== 'auto' && !QUALITY[s.quality]) s.quality = defaults.quality;
   s.sensitivity = Number.isFinite(+s.sensitivity) ? Math.min(2.5, Math.max(.3, +s.sensitivity)) : defaults.sensitivity;
-  s.invertY = Boolean(s.invertY);
-  return { quality: s.quality, sensitivity: s.sensitivity, invertY: s.invertY };
+  return { quality: s.quality, sensitivity: s.sensitivity, invertY: Boolean(s.invertY), night: Boolean(s.night), sound: Boolean(s.sound) };
 }
 
 export function loadSettings() {

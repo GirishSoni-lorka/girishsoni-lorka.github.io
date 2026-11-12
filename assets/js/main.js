@@ -1,8 +1,8 @@
 /* Girish Soni — main.js
    One ticker drives smooth scroll, the x-ray, the particle field and the line.
 
-   The page has three experience modes. AI Agents (agents.js, loaded on demand)
-   is the default; Classic is the original experience. The motion system below
+   The page has three experience modes. Classic, the original experience, is
+   the default; AI Agents (agents.js) is loaded on demand. The motion system below
    (field, line, x-ray) runs in both: in AI Agents mode each section's motion
    fades in once the agents have built it, and smooth scrolling (Lenis) stays
    off so the agents' auto-scroll tour and native scrolling are untouched.
@@ -15,7 +15,7 @@ import { collectScenes, measureScenes } from './scenes.js';
 import { Field } from './field.js';
 import { Signal } from './signal.js';
 import { initXray } from './xray.js';
-import { readStoredMode, resolveStart, saveMode, initModeSwitch } from './mode.js';
+import { readStoredMode, readLinkMode, resolveStart, saveMode, initModeSwitch } from './mode.js';
 import { openSelector, notice } from './selector.js';
 import { launchGame } from './game-launcher.js';
 
@@ -154,8 +154,8 @@ async function bootClassic(gsap, smooth) {
    ========================================================================== */
 const html = document.documentElement;
 const isHome = Boolean(document.querySelector('.hero'));
-const start = resolveStart({ stored: readStoredMode(), isHome, hash: location.hash });
-let mode = start.selector ? null : start.mode; // null until a first-time visitor has chosen
+const start = resolveStart({ stored: readStoredMode(), isHome, hash: location.hash, link: readLinkMode(location.search) });
+let mode = start.selector ? null : start.mode; // null while the selector (?mode=choose) is open
 let classic = null, classicBooting = false, agents = null, token = 0, game = null;
 
 /* the motion system boots once and keeps running; only smooth scroll follows the mode */
@@ -200,10 +200,10 @@ function stopAgents() {
 
 /* Game mode: a full-screen world on top of the page. The page keeps its
    scroll position and its motion system is paused until the visitor returns. */
-function startGame() {
+function startGame(tour = false) {
   html.classList.add('mode-game');
   if (classic) syncMotion(classic);
-  const handle = launchGame({ onExit: next => setMode(next) });
+  const handle = launchGame({ onExit: next => setMode(next), tour });
   game = handle;
   handle.ready.catch(e => {
     if (game !== handle) return; // the visitor already left
@@ -224,15 +224,27 @@ function setMode(next) {
   if (next === mode) return;
   if (mode === 'game') stopGame();
   mode = next; saveMode(next);
+  dropLinkMode();
   if (next === 'agents') startAgents();
   else if (next === 'classic') { stopAgents(); startMotion(); }
   else { stopAgents(); startGame(); }
   modeSwitch.set(next);
 }
 
+/* once the visitor picks a mode themselves, a ?mode= link no longer applies:
+   take it out of the address so a reload does not undo their choice */
+function dropLinkMode() {
+  try {
+    const u = new URL(location.href);
+    if (!u.searchParams.has('mode')) return;
+    u.searchParams.delete('mode');
+    history.replaceState(history.state, '', u.pathname + u.search + u.hash);
+  } catch (e) { /* the address stays as it is */ }
+}
+
 const modeSwitch = initModeSwitch(start.mode, setMode);
 
 if (start.selector) openSelector({ onChoose: setMode });
-else if (mode === 'game') startGame();
+else if (mode === 'game') startGame(start.tour);
 else if (mode === 'agents') startAgents();
 else startMotion();

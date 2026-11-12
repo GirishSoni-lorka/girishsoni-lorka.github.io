@@ -3,18 +3,21 @@
 
 import { h, icon } from './dom.js';
 import { QUALITY } from '../core/settings.js';
+import { shareUrl } from '../../js/mode.js';
 
 const CONTROLS = [
   ['W A S D / arrows', 'Move'], ['Mouse', 'Look around (click the world to capture it, or drag)'],
   ['Shift', 'Sprint'], ['Space', 'Jump'], ['E / Enter', 'Interact with what is in reach'],
   ['Click', 'Open a sign, screen or display you can see'], ['Esc', 'Pause, or close a panel'],
+  ['T', 'Guided tour: be walked round every district'], ['N', 'Day or night'], ['M', 'Sound on or off'],
 ];
 const TOUCH_CONTROLS = [
   ['Left stick', 'Move'], ['Drag the view', 'Look around'], ['Run', 'Hold to sprint'],
   ['Jump', 'Jump'], ['E', 'Interact with what is in reach'], ['Tap', 'Open a sign, screen or display'],
+  ['Route button', 'Guided tour: be walked round every district'],
 ];
 
-export function createMenu({ parent, store, settings, onResume, onExit, onSettings }) {
+export function createMenu({ parent, store, settings, onResume, onExit, onSettings, onTour }) {
   const view = h('div', { class: 'gmenu__view' });
   const root = h('div', { class: 'gmenu', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Game menu', hidden: true },
     h('div', { class: 'gmenu__card' }, view));
@@ -23,15 +26,29 @@ export function createMenu({ parent, store, settings, onResume, onExit, onSettin
   const heading = (text, sub) => [h('p', { class: 'gmenu__eyebrow', text: sub }), h('h2', { class: 'gmenu__title', text })];
   const backBtn = () => h('button', { class: 'gbtn', type: 'button', onclick: () => show('main') }, icon('back'), 'Back');
 
+  /* copy the address that opens Game Mode directly; show it if copying is not allowed */
+  async function share(e) {
+    const btn = e.currentTarget, url = shareUrl(location.href);
+    try {
+      await navigator.clipboard.writeText(url);
+      btn.lastChild.textContent = 'Link copied';
+    } catch (err) {
+      btn.replaceWith(h('input', { class: 'gmenu__url', type: 'text', readonly: true, value: url, 'aria-label': 'Link to this world', onfocus: ev => ev.target.select() }));
+    }
+  }
+
   const views = {
     main: () => [
       heading('Paused', 'Game Mode'),
       h('div', { class: 'gmenu__list' },
         h('button', { class: 'gbtn gbtn--solid', type: 'button', onclick: onResume, 'data-first': true }, 'Resume'),
+        h('button', { class: 'gbtn', type: 'button', onclick: onTour }, icon('route'), store.get().tour ? 'End the guided tour' : 'Guided tour'),
         h('button', { class: 'gbtn', type: 'button', onclick: () => show('controls') }, 'Controls'),
         h('button', { class: 'gbtn', type: 'button', onclick: () => show('settings') }, 'Settings'),
         h('button', { class: 'gbtn', type: 'button', onclick: () => onExit('classic') }, icon('exit'), 'Return to Classic Mode')),
-      h('button', { class: 'gmenu__alt', type: 'button', onclick: () => onExit('agents') }, 'Or switch to AI Agents mode'),
+      h('div', { class: 'gmenu__foot' },
+        h('button', { class: 'gmenu__alt', type: 'button', onclick: () => onExit('agents') }, 'Or switch to AI Agents mode'),
+        h('button', { class: 'gmenu__alt', type: 'button', onclick: share }, 'Copy a link to this world')),
     ],
     controls: () => [
       heading('Controls', store.get().touch ? 'Touch' : 'Keyboard and mouse'),
@@ -69,6 +86,12 @@ export function createMenu({ parent, store, settings, onResume, onExit, onSettin
         h('label', { class: 'gfield gfield--check' },
           h('input', { type: 'checkbox', checked: settings.invertY || null, onchange: e => { settings.invertY = e.target.checked; onSettings(); } }),
           h('span', { text: 'Invert vertical look' })),
+        h('label', { class: 'gfield gfield--check' },
+          h('input', { type: 'checkbox', checked: settings.night || null, onchange: e => { settings.night = e.target.checked; onSettings(); } }),
+          h('span', { text: 'Night' })),
+        h('label', { class: 'gfield gfield--check' },
+          h('input', { type: 'checkbox', checked: settings.sound || null, onchange: e => { settings.sound = e.target.checked; onSettings(); } }),
+          h('span', { text: 'Sound' })),
         backBtn(),
       ];
     },

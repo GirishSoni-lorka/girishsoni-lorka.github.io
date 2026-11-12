@@ -1,8 +1,11 @@
-/* Experience mode: AI Agents (default), Classic or Game. The choice is
+/* Experience mode: Classic (default), AI Agents or Game. The choice is
    remembered in localStorage. The tiny inline script in each page's <head>
    reads the same key so AI Agents visitors never see a flash of finished
    content before the agents start building, and Game visitors never see a
-   flash of the page before the world loads. */
+   flash of the page before the world loads.
+
+   A link can also ask for an experience: ?mode=classic | agents | game |
+   tour (the game, starting with the guided tour) | choose (the selector). */
 
 const KEY = 'gs-mode';
 export const MODES = ['agents', 'classic', 'game'];
@@ -16,21 +19,41 @@ export function readStoredMode() {
 }
 
 export function readMode() {
-  return readStoredMode() || 'agents';
+  return readStoredMode() || 'classic';
+}
+
+/* what a shared link asks for: { mode, tour, choose } or null */
+export function readLinkMode(search) {
+  let v = null;
+  try { v = new URLSearchParams(search || '').get('mode'); } catch (e) { /* no query */ }
+  if (v === 'tour') return { mode: 'game', tour: true, choose: false };
+  if (v === 'choose') return { mode: null, tour: false, choose: true };
+  return MODES.includes(v) ? { mode: v, tour: false, choose: false } : null;
+}
+
+/* the address that opens Game Mode directly, for sharing */
+export function shareUrl(href, tour = false) {
+  const u = new URL(href);
+  u.hash = '';
+  u.search = `?mode=${tour ? 'tour' : 'game'}`;
+  return u.href;
 }
 
 export function saveMode(mode) {
   try { localStorage.setItem(KEY, mode); } catch (e) { /* private mode: the switch still works for this visit */ }
 }
 
-/* What a page load should open. Deep links (a hash, or any page other than
-   home) always render the page itself: Game Mode and the first-visit selector
-   only ever open on a plain visit to the home page. */
-export function resolveStart({ stored, isHome, hash }) {
+/* What a page load should open. A first-time visitor gets Classic. Deep
+   links (a hash, or any page other than home) always render the page itself:
+   Game Mode and the selector only ever open on the home page without a hash.
+   `link` is what readLinkMode() found in the address; it wins over the
+   remembered choice. */
+export function resolveStart({ stored, isHome, hash, link = null }) {
   const deep = !isHome || Boolean(hash && hash !== '#');
-  if (stored === 'game') return { mode: deep ? 'classic' : 'game', selector: false };
-  if (stored === 'classic' || stored === 'agents') return { mode: stored, selector: false };
-  return { mode: 'agents', selector: !deep };
+  if (link && link.choose) return { mode: stored === 'agents' ? 'agents' : 'classic', selector: !deep, tour: false };
+  const want = (link && link.mode) || stored || 'classic';
+  if (want === 'game') return { mode: deep ? 'classic' : 'game', selector: false, tour: !deep && Boolean(link && link.tour) };
+  return { mode: want, selector: false, tour: false };
 }
 
 const ICON_CLASSIC = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="2.5" width="11" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5 10.5h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>';

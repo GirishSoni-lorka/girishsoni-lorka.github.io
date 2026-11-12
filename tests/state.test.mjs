@@ -62,7 +62,9 @@ test('the player starts in the plaza with it already discovered', () => {
 
 test('settings: bad input is repaired', () => {
   assert.deepEqual(sanitize(null), defaults);
-  assert.deepEqual(sanitize({ quality: 'ultra', sensitivity: 'fast', invertY: 1 }), { quality: 'auto', sensitivity: 1, invertY: true });
+  assert.deepEqual(sanitize({ quality: 'ultra', sensitivity: 'fast', invertY: 1, sound: 'yes' }), { quality: 'auto', sensitivity: 1, invertY: true, night: false, sound: true });
+  assert.equal(defaults.sound, false, 'sound is off until the visitor asks for it');
+  assert.equal(defaults.night, false);
   assert.equal(sanitize({ sensitivity: 99 }).sensitivity, 2.5);
   assert.equal(sanitize({ sensitivity: 0 }).sensitivity, .3);
 });

@@ -27,9 +27,9 @@
   <link rel="stylesheet" href="assets/css/site.css">
   <link rel="stylesheet" href="assets/css/agents.css">
   <link rel="stylesheet" href="assets/css/selector.css">
-  <!-- experience mode: AI Agents by default (Classic or Game once chosen); start from a blank canvas, no flash of finished content.
-       Game only resumes on a plain visit to this page: a deep link (#work, #contact) always shows the page. -->
-  <script>(function(){var m,c=document.documentElement.classList;try{m=localStorage.getItem('gs-mode')}catch(e){}if(m==='game'){if(location.hash.length<2)c.add('mode-game')}else if(m!=='classic')c.add('mode-agents','ag-pending')})()</script>
+  <!-- experience mode: Classic by default (AI Agents or Game once chosen, or asked for with ?mode=); start from a blank canvas, no flash of finished content.
+       Game only opens on a plain visit to this page: a deep link (#work, #contact) always shows the page. -->
+  <script>(function(){var m,q,c=document.documentElement.classList;try{m=localStorage.getItem('gs-mode')}catch(e){}q=/[?&]mode=(classic|agents|game|tour|choose)(&|$)/.exec(location.search);if(q)m=q[1]=='tour'?'game':q[1]=='choose'?(m=='agents'?m:'classic'):q[1];if(m==='game'){if(location.hash.length<2)c.add('mode-game')}else if(m==='agents')c.add('mode-agents','ag-pending')})()</script>
 
   <script type="application/ld+json">
   {

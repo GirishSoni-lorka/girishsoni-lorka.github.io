@@ -1,0 +1,8 @@
+# GitHub Pages publishes this branch as it is. This file only keeps
+# development material (tests, notes, the original brief) off the live site.
+exclude:
+  - tests
+  - prompt.md
+  - PROJECT_ANALYSIS.md
+  - IMPLEMENTATION_PLAN.md
+  - PROGRESS.md

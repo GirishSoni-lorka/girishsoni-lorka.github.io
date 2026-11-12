@@ -10,9 +10,10 @@ export function createPanel({ parent, onOpen, onClose }) {
   const body = h('div', { class: 'gpanel__body' });
   const back = h('button', { class: 'gicon', type: 'button', 'aria-label': 'Back', hidden: true }, icon('back'));
   const close = h('button', { class: 'gicon', type: 'button', 'aria-label': 'Close panel (Esc)' }, icon('close'));
+  const foot = h('footer', { class: 'gpanel__foot', hidden: true });
   const root = h('aside', { class: 'gpanel', role: 'dialog', 'aria-labelledby': 'gpanel-title', hidden: true },
     h('header', { class: 'gpanel__head' }, back, h('div', { class: 'gpanel__heading' }, eyebrow, title), close),
-    body);
+    body, foot);
   parent.appendChild(root);
 
   let current = null, backTo = null, hideTimer = 0;
@@ -30,7 +31,8 @@ export function createPanel({ parent, onOpen, onClose }) {
     body.scrollTop = 0;
     // restart the content transition on every change of panel
     body.classList.remove('is-in'); void body.offsetWidth; body.classList.add('is-in');
-    if (root.hidden) { root.hidden = false; void root.offsetWidth; root.classList.add('is-open'); }
+    // also when it is on its way out: a panel can be reopened in the moment after it was closed
+    if (!root.classList.contains('is-open')) { root.hidden = false; void root.offsetWidth; root.classList.add('is-open'); }
     title.focus({ preventScroll: true });
     onOpen(panel);
     return true;
@@ -60,6 +62,8 @@ export function createPanel({ parent, onOpen, onClose }) {
     open: show,
     close: hide,
     isOpen: () => Boolean(current),
+    /* something that stays at the bottom of every panel (the tour controls), or null */
+    setFooter(el) { foot.replaceChildren(...(el ? [el] : [])); foot.hidden = !el; },
     current: () => current,
     destroy() { clearTimeout(hideTimer); root.remove(); },
   };

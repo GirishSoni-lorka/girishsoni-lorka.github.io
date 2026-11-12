@@ -29,7 +29,7 @@ Audit of the repository as it stood at commit `fe2981e`, before Game Mode work b
 
 ## Existing experience modes
 
-The site already has two modes behind a switch: **AI Agents** (default for new visitors) and **Classic**.
+The site already had two modes behind a switch: **AI Agents** (then the default for new visitors) and **Classic** (the default since Game Mode's second round).
 An inline script in each page's `<head>` reads `gs-mode` and adds `mode-agents ag-pending` before first paint so
 AI Agents visitors never see a flash of finished content. Both modes share the motion system; only Lenis smooth
 scrolling is Classic-only.

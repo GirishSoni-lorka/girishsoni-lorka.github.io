@@ -9,7 +9,7 @@ const PLAY = { dist: 7.2, pitch: .3 };
 const OVERVIEW = { dist: 54, pitch: .62 };
 const PITCH_MIN = -.2, PITCH_MAX = 1.25;
 
-export function createFollowCamera({ camera, colliders, settings, start }) {
+export function createFollowCamera({ camera, colliders, settings, start, still = false }) {
   const focus = new THREE.Vector3(start.x, 1.5, start.z);
   const dir = new THREE.Vector3();
   let yaw = start.facing + Math.PI; // behind the player
@@ -26,6 +26,21 @@ export function createFollowCamera({ camera, colliders, settings, start }) {
     /* the opening: a slow turn high above the plaza */
     overview() { orbiting = true; pitch = OVERVIEW.pitch; dist = wanted = OVERVIEW.dist; },
     /* swoop down behind the player */
+    /* swing round behind a player who is moving on their own (the guided tour) */
+    trail(heading, dt) {
+      if (fly || orbiting) return;
+      const behind = heading + Math.PI;
+      yaw += Math.atan2(Math.sin(behind - yaw), Math.cos(behind - yaw)) * Math.min(1, dt * 2.4);
+      pitch += (.36 - pitch) * Math.min(1, dt * 2);
+      wanted = PLAY.dist;
+    },
+    /* cut straight to a player who has just been moved */
+    snap(target, heading) {
+      fly = null; orbiting = false;
+      focus.set(target.x, target.y + 1.5, target.z);
+      if (Number.isFinite(heading)) yaw = heading + Math.PI;
+      pitch = .36; dist = wanted = PLAY.dist;
+    },
     enter(seconds = 1.8) {
       orbiting = false;
       const back = start.facing + Math.PI;
@@ -41,7 +56,7 @@ export function createFollowCamera({ camera, colliders, settings, start }) {
         dist = wanted = fly.from.dist + (fly.to.dist - fly.from.dist) * k;
         if (fly.t >= 1) fly = null;
       } else if (orbiting) {
-        yaw += dt * .07;
+        if (!still) yaw += dt * .07;
       } else if (look) {
         const s = .0024 * settings.sensitivity;
         yaw -= look.dx * s;

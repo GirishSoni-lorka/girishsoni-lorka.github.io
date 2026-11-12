@@ -45,6 +45,9 @@ export const initialState = {
   quality: 'medium',       // the preset in effect: low | medium | high
   touch: false,
   locked: false,           // pointer lock is active
+  night: false,            // the city is in its night look
+  sound: false,
+  tour: null,              // the guided tour: { index, total, phase, name, accent, next } or null
 };
 
 /* mark a district as found; returns the same array when nothing changed */

@@ -33,6 +33,7 @@ export function createContext(scene) {
     interactables: [],  // { id, x, y, z, radius, prompt, panel }
     clickTargets: [],   // meshes whose userData.interact names an interactable
     animated: [],       // (t, dt) => void, run every frame
+    night: [],          // (k) => void, run when the day/night blend (0..1) changes
 
     /* lit surface. Options: rough, metal, flat, emissive, glow, opacity, double, ground (z-fight layer) */
     mat(color, o = {}) {

@@ -1,6 +1,7 @@
-/* The experience selector: shown once, to a first-time visitor on the home
-   page, before any mode has started. Returning visitors go straight to the
-   mode they chose last and use the switch (or the game's menu) to change it. */
+/* The experience selector: a full-screen choice between the three modes,
+   opened by a link to the home page with ?mode=choose. Everyone else goes
+   straight to Classic (or the mode they chose last) and uses the switch, or
+   the game's menu, to change it. */
 
 import { detectSupport } from './game-launcher.js';
 

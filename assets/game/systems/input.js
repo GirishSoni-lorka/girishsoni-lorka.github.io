@@ -23,7 +23,11 @@ export function createInput({ canvas, isPlaying, onAction }) {
     const k = KEYS[e.code];
     if (k) { held.add(k); e.preventDefault(); return; }
     if (e.code === 'Space') { if (!e.repeat) jump = true; e.preventDefault(); return; }
-    if (e.code === 'KeyE' || e.code === 'Enter') { if (!e.repeat) onAction('interact'); e.preventDefault(); }
+    if (e.code === 'KeyE' || e.code === 'Enter') { if (!e.repeat) onAction('interact'); e.preventDefault(); return; }
+    if (e.repeat) return;
+    if (e.code === 'KeyT') onAction('tour');
+    else if (e.code === 'KeyN') onAction('night');
+    else if (e.code === 'KeyM') onAction('sound');
   };
   const onKeyUp = e => { const k = KEYS[e.code]; if (k) held.delete(k); };
   const clear = () => { held.clear(); dragging = false; jump = false; };

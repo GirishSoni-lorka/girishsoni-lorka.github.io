@@ -1,6 +1,7 @@
 /* Heads-up display: who and where you are, what you have found, where to go
-   next, the map, and the two ways out (menu, Classic). Driven entirely by
-   store changes; nothing here runs per frame except the minimap. */
+   next, the map, the quick toggles (tour, night, sound) and the two ways out
+   (menu, Classic). Driven entirely by store changes; nothing here runs per
+   frame except the minimap. */
 
 import { h, icon } from './dom.js';
 import { locations, findLocation } from '../data/locations.js';
@@ -8,7 +9,7 @@ import { profile } from '../data/profile.js';
 import { createMinimap } from './minimap.js';
 import { createPrompt } from './prompt.js';
 
-export function createHud({ parent, store, onPause, onExit, onInteract }) {
+export function createHud({ parent, store, onPause, onExit, onInteract, onTour, onNight, onSound, onSummary }) {
   const pips = locations.map(l => h('i', { title: l.name, style: `--accent:${l.accent}` }));
   const count = h('span', { class: 'ghud__count' });
   const place = h('p', { class: 'ghud__place' });
@@ -27,17 +28,28 @@ export function createHud({ parent, store, onPause, onExit, onInteract }) {
   const objName = h('p', { class: 'gobj__name' });
   const objMeta = h('p', { class: 'gobj__meta' });
   const objective = h('div', { class: 'gobj' }, objArrow, h('div', null, h('p', { class: 'gobj__label', text: 'Next district' }), objName, objMeta));
+  // once every district is found, the objective becomes the way to the summary
+  const summary = h('button', { class: 'gobj gobj--done', type: 'button', hidden: true, onclick: onSummary },
+    h('span', { class: 'gobj__arrow' }, icon('flag', 15)),
+    h('span', null, h('span', { class: 'gobj__label', text: 'Every district found' }), h('span', { class: 'gobj__name', text: 'Open the summary' })));
 
   const mapWrap = h('div', { class: 'ghud__map' });
+  const tool = (name, label, onclick, pressed) => h('button', {
+    class: 'gbtn gbtn--glass gbtn--icon', type: 'button', onclick, title: label, 'aria-label': label, 'aria-pressed': pressed ? 'false' : null,
+  }, icon(name));
+  const tourBtn = tool('route', 'Guided tour (T)', onTour);
+  const nightBtn = tool('moon', 'Night (N)', onNight, true);
+  const soundBtn = tool('mute', 'Sound (M)', onSound, true);
   const tools = h('div', { class: 'ghud__tools' },
     h('button', { class: 'gbtn gbtn--glass', type: 'button', onclick: onPause, 'aria-label': 'Open the menu (Esc)' }, icon('menu'), h('span', { text: 'Menu' })),
-    h('button', { class: 'gbtn gbtn--glass', type: 'button', onclick: () => onExit('classic'), 'aria-label': 'Switch to the Classic experience' }, icon('exit'), h('span', { text: 'Classic' })));
+    h('button', { class: 'gbtn gbtn--glass', type: 'button', onclick: () => onExit('classic'), 'aria-label': 'Switch to the Classic experience' }, icon('exit'), h('span', { text: 'Classic' })),
+    tourBtn, nightBtn, soundBtn);
 
   const toasts = h('div', { class: 'gtoasts', role: 'status', 'aria-live': 'polite' });
   const hint = h('p', { class: 'ghud__hint' });
 
   const root = h('div', { class: 'ghud' },
-    h('div', { class: 'ghud__left' }, card, objective),
+    h('div', { class: 'ghud__left' }, card, objective, summary),
     h('div', { class: 'ghud__right' }, mapWrap, tools),
     toasts, hint);
   parent.appendChild(root);
@@ -62,11 +74,17 @@ export function createHud({ parent, store, onPause, onExit, onInteract }) {
     }
     if (!prev || s.objective !== prev.objective) {
       const o = s.objective;
-      objective.classList.toggle('is-done', !o);
-      objName.textContent = o ? o.name : 'Every district found';
-      objMeta.textContent = o ? `${o.distance} m` : 'Explore freely';
-      if (o) objArrow.style.transform = `rotate(${o.bearing}deg)`;
+      objective.hidden = !o;
+      if (o) {
+        objName.textContent = o.name;
+        objMeta.textContent = `${o.distance} m`;
+        objArrow.style.transform = `rotate(${o.bearing}deg)`;
+      }
     }
+    if (!prev || s.discovered !== prev.discovered) summary.hidden = s.discovered.length < locations.length;
+    if (!prev || s.night !== prev.night) { nightBtn.setAttribute('aria-pressed', String(s.night)); nightBtn.replaceChildren(icon(s.night ? 'sun' : 'moon')); }
+    if (!prev || s.sound !== prev.sound) { soundBtn.setAttribute('aria-pressed', String(s.sound)); soundBtn.replaceChildren(icon(s.sound ? 'sound' : 'mute')); }
+    if (!prev || s.tour !== prev.tour) tourBtn.hidden = Boolean(s.tour);
     if (!prev || s.prompt !== prev.prompt || s.touch !== prev.touch) prompt.set(s.prompt, s.touch);
     if (!prev || s.locked !== prev.locked || s.touch !== prev.touch) {
       hint.textContent = s.touch ? '' : s.locked ? 'Esc frees the mouse and opens the menu' : 'Click the world to look around with the mouse, or drag';
@@ -91,6 +109,8 @@ export function createHud({ parent, store, onPause, onExit, onInteract }) {
       requestAnimationFrame(() => t.classList.add('is-in'));
       setTimeout(() => { t.classList.remove('is-in'); setTimeout(() => t.remove(), 500); }, 4600);
     },
+    /* add an element of the caller's to the HUD (the tour bar) */
+    mount(el) { root.appendChild(el); },
     destroy() { stop(); clearTimeout(hintTimer); minimap.destroy(); root.remove(); },
   };
 }

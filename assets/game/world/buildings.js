@@ -9,7 +9,7 @@ import { facadeTexture } from './props.js';
 
 export function buildCity(ctx) {
   const rnd = seeded('city');
-  const base = facadeTexture();
+  const base = facadeTexture(), lit = facadeTexture(true);
   const walls = ['#f1efe9', '#e3e7e8', '#ece4d6', '#dfe5ea'];
   const angles = locations.filter(l => l.angle !== null).map(l => l.angle);
 
@@ -28,7 +28,14 @@ export function buildCity(ctx) {
       const map = base.clone();
       map.repeat.set(Math.round(w / 3.4), Math.round(h / 3.4));
       map.needsUpdate = true;
-      const wall = new THREE.MeshStandardMaterial({ map, color: walls[Math.floor(rnd() * walls.length)], roughness: .7, metalness: .05 });
+      const glow = lit.clone();
+      glow.repeat.copy(map.repeat);
+      glow.needsUpdate = true;
+      const wall = new THREE.MeshStandardMaterial({
+        map, color: walls[Math.floor(rnd() * walls.length)], roughness: .7, metalness: .05,
+        emissive: '#ffffff', emissiveMap: glow, emissiveIntensity: 0,
+      });
+      ctx.night.push(k => { wall.emissiveIntensity = k * .6; }); // windows come on at night
 
       block(g, ctx.glass('#5f8ea3'), w - .6, 3.4, d - .6);                       // glazed ground floor
       block(g, ctx.mat(PALETTE.white), w + .5, .35, d + .5, 0, 3.4, 0);           // canopy line

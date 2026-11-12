@@ -16,7 +16,7 @@ assets/
   js/
     mode.js          (edited)  three modes: agents | classic | game
     main.js          (edited)  orchestration; pauses classic motion while the game runs
-    selector.js      (new)     first-visit experience selector
+    selector.js      (new)     experience selector (opened by ?mode=choose)
     game-launcher.js (new)     capability check + lazy import of the game
   css/
     selector.css     (new)     selector + game-mode page lock
@@ -29,8 +29,8 @@ assets/
     locations/ spawnPlaza.js developerHeadquarters.js technologyZone.js projectGarage.js
                achievementCenter.js missionControl.js
     player/    player.js controller.js camera.js
-    systems/   input.js collision.js interaction.js navigation.js performance.js
-    ui/        loading.js hud.js minimap.js prompt.js panel.js menu.js touch.js content.js
+    systems/   input.js collision.js interaction.js navigation.js performance.js tour.js audio.js
+    ui/        loading.js hud.js minimap.js prompt.js panel.js menu.js touch.js content.js tourbar.js
   models/explorer.glb          animated character (CC0)
   vendor/three/                Three.js r170 module build + GLTFLoader
 tests/                         node:test suite (no dependencies)
@@ -42,9 +42,9 @@ Mapping from the brief's suggested structure: `components/game/*` → `assets/ga
 ## Key decisions
 
 - **Three modes.** The pill switch gains a Game option. `gs-mode` stores `agents`, `classic` or `game`.
-- **Selector.** First-time visitors on the home page (no hash) see the selector: Classic, Game, and the
-  existing AI Agents. Returning visitors go straight to their last mode and change it with the switch
-  (or, in the game, the HUD and pause menu).
+- **Default and selector.** First-time visitors get Classic. Returning visitors go straight to their last
+  mode and change it with the switch (or, in the game, the HUD and pause menu). The full-screen selector
+  opens only from a `?mode=choose` link; `?mode=game`, `?mode=tour` and `?mode=agents` open a mode directly.
 - **Deep links are sacred.** Any URL with a hash, and `projects.html`, always render the page.
 - **State.** One small observable store. The render loop only writes to it when a value actually changes.
 - **Collision.** The world is flat, so collision is 2D (circles and rotated boxes with a height) resolved in

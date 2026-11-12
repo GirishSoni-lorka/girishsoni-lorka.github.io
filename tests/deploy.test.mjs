@@ -118,3 +118,34 @@ test('the classic site never statically imports the game or the 3D engine', () =
   assert.ok(loaded.includes('assets/js/game-launcher.js'));
   for (const f of loaded) assert.ok(!f.startsWith('assets/game/') && !f.includes('vendor/'), `${f} is loaded up front`);
 });
+
+test('development material is kept off the published site', () => {
+  // GitHub Pages builds with Jekyll (there is no .nojekyll): _config.yml is read, never published
+  const config = fs.readFileSync(path.join(ROOT, '_config.yml'), 'utf8');
+  const excluded = [...config.matchAll(/^\s*-\s*(\S+)\s*$/gm)].map(m => m[1]);
+  const top = fs.readdirSync(ROOT).filter(n => !n.startsWith('.') && !n.startsWith('_'));
+  for (const name of top) {
+    const published = !excluded.includes(name);
+    const site = ['index.html', 'projects.html', 'CNAME', 'assets'].includes(name);
+    assert.equal(published, site, `${name} should ${site ? '' : 'not '}be published`);
+  }
+  for (const name of excluded) assert.ok(fs.existsSync(path.join(ROOT, name)), `${name} is excluded but does not exist`);
+});
+
+test('the inline head script agrees with mode.js about what a page load opens', async () => {
+  globalThis.localStorage ??= { getItem: () => null, setItem() {} };
+  const { resolveStart, readLinkMode } = await import('../assets/js/mode.js');
+  for (const page of ['index.html', 'projects.html']) {
+    const html = fs.readFileSync(path.join(ROOT, page), 'utf8');
+    const script = html.match(/<script>(\(function\(\)\{var m,q[\s\S]*?)<\/script>/)[1];
+    const isHome = page === 'index.html';
+    for (const stored of [null, 'classic', 'agents', 'game']) for (const search of ['', '?mode=classic', '?mode=agents', '?mode=game', '?mode=tour', '?mode=choose', '?x=1&mode=game']) for (const hash of ['', '#work']) {
+      const classes = new Set();
+      const run = new Function('localStorage', 'location', 'document', script);
+      run({ getItem: () => stored }, { search, hash }, { documentElement: { classList: { add: (...c) => c.forEach(x => classes.add(x)) } } });
+      const want = resolveStart({ stored, isHome, hash, link: readLinkMode(search) }).mode;
+      const got = classes.has('mode-game') ? 'game' : classes.has('mode-agents') ? 'agents' : 'classic';
+      assert.equal(got, want, `${page} stored=${stored} ${search}${hash}`);
+    }
+  }
+});
