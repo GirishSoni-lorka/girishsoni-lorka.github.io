@@ -26,9 +26,10 @@ varying float vHot;
 varying float vA;
 uniform vec3 uBone;
 uniform vec3 uSignal;
+uniform float uGain;
 void main() {
   float r = length(gl_PointCoord - 0.5);
-  float a = smoothstep(0.5, 0.16, r) * vA;
+  float a = smoothstep(0.5, 0.16, r) * vA * uGain;
   if (a < 0.004) discard;
   gl_FragColor = vec4(mix(uBone, uSignal, vHot) * a, a);
 }`;
@@ -56,8 +57,10 @@ export class Field {
     this.u = {
       res: gl.getUniformLocation(prog, 'uRes'), dpr: gl.getUniformLocation(prog, 'uDpr'), base: gl.getUniformLocation(prog, 'uBase'),
     };
-    gl.uniform3f(gl.getUniformLocation(prog, 'uBone'), 236 / 255, 231 / 255, 220 / 255);
-    gl.uniform3f(gl.getUniformLocation(prog, 'uSignal'), 1, 90 / 255, 31 / 255);
+    this.u.bone = gl.getUniformLocation(prog, 'uBone');
+    this.u.signal = gl.getUniformLocation(prog, 'uSignal');
+    this.u.gain = gl.getUniformLocation(prog, 'uGain');
+    this.setTheme({ light: false, bone: [236, 231, 220], signal: [255, 90, 31] });
 
     const N = this.N;
     this.data = new Float32Array(N * 5);
@@ -109,6 +112,18 @@ export class Field {
     gl.viewport(0, 0, this.canvas.width, this.canvas.height);
     gl.uniform2f(this.u.res, vw, vh); gl.uniform1f(this.u.dpr, dpr);
     gl.uniform1f(this.u.base, vw < 700 ? 2.3 : 2.7);
+  }
+
+  /* dark: light points glow (additive). light: ink points sit on paper
+     (normal "over" blending, a little fainter so the field stays a texture) */
+  setTheme(p) {
+    if (!this.ok) return;
+    const { gl } = this, c = v => v / 255;
+    gl.uniform3f(this.u.bone, c(p.bone[0]), c(p.bone[1]), c(p.bone[2]));
+    gl.uniform3f(this.u.signal, c(p.signal[0]), c(p.signal[1]), c(p.signal[2]));
+    gl.uniform1f(this.u.gain, p.light ? .78 : 1);
+    if (p.light) gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    else gl.blendFunc(gl.ONE, gl.ONE);
   }
 
   measure(scenes) {

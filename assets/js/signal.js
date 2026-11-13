@@ -4,13 +4,22 @@
 
 import { clamp, smooth, connector, strokePart, pointAtLen } from './geo.js';
 
-const SIGNAL = '#ff5a1f';
-const BONE_FAINT = 'rgba(236, 231, 220, .28)';
 
 export class Signal {
   constructor(canvas, { reduce }) {
     this.canvas = canvas; this.ctx = canvas.getContext('2d'); this.reduce = reduce;
     this.pieces = []; this.scenes = []; this.P = [0, 0];
+    this.setTheme({ ground: '#05090b', bone: [236, 231, 220], signal: [255, 90, 31] });
+  }
+
+  /* colours come from the active theme (see theme.js) */
+  setTheme(p) {
+    const rgb = c => c.join(', ');
+    this.c = {
+      signal: `rgb(${rgb(p.signal)})`, signalRgb: rgb(p.signal),
+      glow: `rgba(${rgb(p.signal)}, .16)`, halo: `rgba(${rgb(p.signal)}, .18)`,
+      bone: `rgb(${rgb(p.bone)})`, boneFaint: `rgba(${rgb(p.bone)}, .28)`, ground: p.ground,
+    };
   }
 
   resize(vw, vh, dpr) {
@@ -33,7 +42,7 @@ export class Signal {
   }
 
   frame(state, field) {
-    const { ctx } = this, { sy, vw, vh, time, maxScroll } = state;
+    const { ctx, c } = this, { sy, vw, vh, time, maxScroll } = state;
     ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     ctx.clearRect(0, 0, vw, vh);
     if (!this.pieces.length) return;
@@ -72,24 +81,24 @@ export class Signal {
       const hx = head[0], hy = head[1] - sy;
       if (hy > -20 && hy < vh + 20) {
         const breath = this.reduce ? 0 : (Math.sin(time * 3) + 1) * .5;
-        ctx.fillStyle = 'rgba(255, 90, 31, .16)';
+        ctx.fillStyle = c.glow;
         ctx.beginPath(); ctx.arc(hx, hy, 10 + breath * 5, 0, 6.283); ctx.fill();
-        ctx.fillStyle = SIGNAL;
+        ctx.fillStyle = c.signal;
         ctx.beginPath(); ctx.arc(hx, hy, 3.6, 0, 6.283); ctx.fill();
       }
     }
   }
 
   stroke(path, frac, sy) {
-    const { ctx } = this;
-    ctx.strokeStyle = 'rgba(255, 90, 31, .16)'; ctx.lineWidth = 6;
+    const { ctx, c } = this;
+    ctx.strokeStyle = c.glow; ctx.lineWidth = 6;
     strokePart(ctx, path, frac, sy);
-    ctx.strokeStyle = SIGNAL; ctx.lineWidth = 1.6;
+    ctx.strokeStyle = c.signal; ctx.lineWidth = 1.6;
     strokePart(ctx, path, frac, sy);
   }
 
   decorate(s, state, pen, field) {
-    const { ctx } = this, { sy, vh, time } = state, p = s.lineP;
+    const { ctx, c } = this, { sy, vh, time } = state, p = s.lineP;
 
     // stage labels appear as the line reaches them
     for (const tag of s.tags) {
@@ -104,11 +113,11 @@ export class Signal {
       const lit = pen >= n[1];
       ctx.beginPath(); ctx.arc(n[0], y, 4.5, 0, 6.283);
       if (lit) {
-        ctx.fillStyle = 'rgba(255, 90, 31, .18)'; ctx.beginPath(); ctx.arc(n[0], y, 10, 0, 6.283); ctx.fill();
-        ctx.fillStyle = SIGNAL; ctx.beginPath(); ctx.arc(n[0], y, 4.5, 0, 6.283); ctx.fill();
+        ctx.fillStyle = c.halo; ctx.beginPath(); ctx.arc(n[0], y, 10, 0, 6.283); ctx.fill();
+        ctx.fillStyle = c.signal; ctx.beginPath(); ctx.arc(n[0], y, 4.5, 0, 6.283); ctx.fill();
       } else {
-        ctx.fillStyle = '#05090b'; ctx.fill();
-        ctx.strokeStyle = BONE_FAINT; ctx.lineWidth = 1.2; ctx.stroke();
+        ctx.fillStyle = c.ground; ctx.fill();
+        ctx.strokeStyle = c.boneFaint; ctx.lineWidth = 1.2; ctx.stroke();
       }
     }
 
@@ -119,14 +128,14 @@ export class Signal {
       pointAtLen(s.route, d, this.P);
       const x = this.P[0], y = this.P[1] - sy;
       if (y > -20 && y < vh + 20) {
-        ctx.fillStyle = '#ece7dc'; ctx.beginPath(); ctx.arc(x, y, 5, 0, 6.283); ctx.fill();
-        ctx.strokeStyle = SIGNAL; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(x, y, 9, 0, 6.283); ctx.stroke();
+        ctx.fillStyle = c.bone; ctx.beginPath(); ctx.arc(x, y, 5, 0, 6.283); ctx.fill();
+        ctx.strokeStyle = c.signal; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(x, y, 9, 0, 6.283); ctx.stroke();
       }
       if (drawn >= s.route.total - 1) {
         const e = s.route.end, ping = this.reduce ? .4 : (time % 1.6) / 1.6;
-        ctx.strokeStyle = `rgba(255, 90, 31, ${1 - ping})`; ctx.lineWidth = 1.5;
+        ctx.strokeStyle = `rgba(${c.signalRgb}, ${1 - ping})`; ctx.lineWidth = 1.5;
         ctx.beginPath(); ctx.arc(e[0], e[1] - sy, 6 + ping * 22, 0, 6.283); ctx.stroke();
-        ctx.fillStyle = SIGNAL; ctx.beginPath(); ctx.arc(e[0], e[1] - sy, 5, 0, 6.283); ctx.fill();
+        ctx.fillStyle = c.signal; ctx.beginPath(); ctx.arc(e[0], e[1] - sy, 5, 0, 6.283); ctx.fill();
       }
     }
 
@@ -136,11 +145,11 @@ export class Signal {
       const a = field.citeW * gate;
       const [qx, qy] = field.query;
       ctx.globalAlpha = a;
-      ctx.strokeStyle = SIGNAL; ctx.lineWidth = 1; ctx.setLineDash([3, 4]);
-      field.cites.forEach(c => { ctx.beginPath(); ctx.moveTo(qx, qy); ctx.lineTo(c[0], c[1]); ctx.stroke(); });
+      ctx.strokeStyle = c.signal; ctx.lineWidth = 1; ctx.setLineDash([3, 4]);
+      field.cites.forEach(pt => { ctx.beginPath(); ctx.moveTo(qx, qy); ctx.lineTo(pt[0], pt[1]); ctx.stroke(); });
       ctx.setLineDash([]);
-      ctx.fillStyle = SIGNAL; ctx.font = '500 11px "Martian Mono", monospace';
-      field.cites.forEach((c, n) => { ctx.fillText(`[${n + 1}]`, c[0] + 8, c[1] - 8); });
+      ctx.fillStyle = c.signal; ctx.font = '500 11px "Martian Mono", monospace';
+      field.cites.forEach((pt, n) => { ctx.fillText(`[${n + 1}]`, pt[0] + 8, pt[1] - 8); });
       ctx.beginPath(); ctx.arc(qx, qy, 5, 0, 6.283); ctx.fill();
       ctx.globalAlpha = 1;
     }

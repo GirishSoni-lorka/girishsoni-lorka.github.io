@@ -18,6 +18,7 @@ import { initXray } from './xray.js';
 import { readStoredMode, readLinkMode, resolveStart, saveMode, initModeSwitch } from './mode.js';
 import { openSelector, notice } from './selector.js';
 import { launchGame } from './game-launcher.js';
+import { initThemeToggle, onTheme, palette } from './theme.js';
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -52,6 +53,9 @@ async function bootClassic(gsap, smooth) {
 
   const field = new Field(document.getElementById('field'), { count, reduce });
   const signal = new Signal(document.getElementById('signal'), { reduce });
+  const paint = p => { field.setTheme(p); signal.setTheme(p); };
+  paint(palette());
+  onTheme(paint);
   const xray = initXray({ fine, reduce, gsap });
   const heroXr = xray.blocks.find(b => b.build === 'intro');
   const hero = document.querySelector('.hero');
@@ -243,6 +247,7 @@ function dropLinkMode() {
 }
 
 const modeSwitch = initModeSwitch(start.mode, setMode);
+initThemeToggle();
 
 if (start.selector) openSelector({ onChoose: setMode });
 else if (mode === 'game') startGame(start.tour);

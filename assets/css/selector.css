@@ -4,8 +4,8 @@
    ========================================================================== */
 
 /* ---------- mode switch: Game option ---------- */
-.mode-switch[data-mode="game"] .mode-switch__thumb { background: var(--signal); box-shadow: 0 0 14px -4px rgba(255, 90, 31, .6); }
-.mode-switch[data-mode="game"] .mode-switch__opt[aria-checked="true"] { color: #140500; }
+.mode-switch[data-mode="game"] .mode-switch__thumb { background: var(--signal); box-shadow: 0 0 14px -4px rgba(var(--signal-rgb), .6); }
+.mode-switch[data-mode="game"] .mode-switch__opt[aria-checked="true"] { color: var(--on-signal); }
 @media (max-width: 420px) {
   .mode-switch__opt span { display: none; }
   .mode-switch__opt { padding: 0 9px; }
@@ -25,8 +25,8 @@ html.xp-open, html.xp-open body { overflow: hidden; }
   padding: clamp(20px, 4vw, 56px);
   overflow-y: auto;
   background:
-    radial-gradient(90vw 70vh at 84% -10%, rgba(38, 86, 94, .34), transparent 70%),
-    radial-gradient(60vw 50vh at -8% 106%, rgba(255, 90, 31, .08), transparent 70%),
+    radial-gradient(90vw 70vh at 84% -10%, rgba(var(--sky-rgb), calc(var(--sky-a) + .04)), transparent 70%),
+    radial-gradient(60vw 50vh at -8% 106%, rgba(var(--signal-rgb), .08), transparent 70%),
     var(--ground);
   color: var(--bone);
   opacity: 0; transition: opacity .45s ease;
@@ -67,11 +67,11 @@ html.xp-open, html.xp-open body { overflow: hidden; }
 }
 .xp-card__go::after { content: ''; width: 26px; height: 1.5px; background: currentColor; transition: width .35s cubic-bezier(.2, .8, .2, 1); }
 .xp-card:not(:disabled):hover, .xp-card:not(:disabled):focus-visible {
-  border-color: rgba(236, 231, 220, .34); background: rgba(236, 231, 220, .07); transform: translateY(-3px);
+  border-color: rgba(var(--bone-rgb), .34); background: rgba(var(--bone-rgb), .07); transform: translateY(-3px);
 }
 .xp-card:not(:disabled):hover .xp-card__go::after, .xp-card:focus-visible .xp-card__go::after { width: 46px; }
 .xp-card--game:not(:disabled) .xp-card__go { color: var(--signal); }
-.xp-card--game:not(:disabled):hover, .xp-card--game:not(:disabled):focus-visible { border-color: rgba(255, 90, 31, .6); }
+.xp-card--game:not(:disabled):hover, .xp-card--game:not(:disabled):focus-visible { border-color: rgba(var(--signal-rgb), .6); }
 .xp-card:disabled { cursor: not-allowed; opacity: .55; }
 
 .xp__alt {
@@ -96,9 +96,9 @@ html.xp-open, html.xp-open body { overflow: hidden; }
   position: fixed; z-index: 95; left: 50%; bottom: 24px;
   width: max-content; max-width: min(560px, calc(100vw - 32px));
   padding: 13px 18px; border-radius: 12px;
-  background: rgba(9, 14, 16, .92); border: 1px solid rgba(236, 231, 220, .2);
+  background: var(--glass-strong); border: 1px solid rgba(var(--bone-rgb), .2);
   color: var(--bone); font-size: 14.5px; line-height: 1.45; cursor: pointer;
-  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, .8);
+  box-shadow: 0 18px 40px -18px var(--shadow);
   opacity: 0; transform: translate(-50%, 10px); transition: opacity .35s, transform .35s;
 }
 .xp-notice.is-in { opacity: 1; transform: translate(-50%, 0); }

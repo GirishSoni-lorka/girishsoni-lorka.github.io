@@ -35,6 +35,8 @@
   <!-- experience mode: Classic by default (AI Agents once chosen, or asked for with ?mode=agents); start from a blank canvas, no flash of finished content.
        A remembered Game choice shows this page as Classic: Game Mode only opens on the home page. -->
   <script>(function(){var m,q;try{m=localStorage.getItem('gs-mode')}catch(e){}q=/[?&]mode=(classic|agents|game|tour|choose)(&|$)/.exec(location.search);if(q&&q[1]!='choose')m=q[1];if(m==='agents')document.documentElement.classList.add('mode-agents','ag-pending')})()</script>
+  <!-- colour theme: dark by default, light once chosen with the toggle in the top bar (applied before first paint) -->
+  <script>(function(){var t;try{t=localStorage.getItem('gs-theme')}catch(e){}if(t==='light'){document.documentElement.dataset.theme='light';var m=document.querySelector('meta[name="theme-color"]');if(m)m.content='#F2EEE6';m=document.querySelector('meta[name="color-scheme"]');if(m)m.content='light'}})()</script>
 </head>
 
 <body>
@@ -51,6 +53,10 @@
         <a class="bar__link bar__link--wide" href="index.html#journey">Journey</a>
         <a class="bar__link" href="index.html">Home</a>
         <a class="bar__link bar__link--cta" href="#contact">Contact</a>
+        <button class="theme-toggle" type="button" aria-label="Switch to light theme" title="Switch to light theme">
+          <svg class="theme-toggle__sun" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.2v1.6M8 13.2v1.6M1.2 8h1.6M13.2 8h1.6M3.2 3.2l1.1 1.1M11.7 11.7l1.1 1.1M3.2 12.8l1.1-1.1M11.7 4.3l1.1-1.1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <svg class="theme-toggle__moon" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.6 10.1A6 6 0 0 1 5.9 2.4a6 6 0 1 0 7.7 7.7z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        </button>
       </nav>
     </div>
   </header>
